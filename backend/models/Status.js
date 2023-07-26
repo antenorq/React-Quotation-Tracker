@@ -3,9 +3,7 @@ const { Schema } = mongoose;
 
 const statusSchema = new Schema(
   {
-    name: String,
-    email: String,
-    password: String,
+    description: String,
   },
   { timestamps: true }
 );
