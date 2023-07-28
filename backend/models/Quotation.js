@@ -5,7 +5,7 @@ const quotationSchema = new Schema(
   {
     customerId: mongoose.ObjectId,
     userId: mongoose.ObjectId,
-    statusId: mongoose.ObjectId,
+    status: String,
     quoteGiven: String,
     date: Date,
     followUp: Date,
