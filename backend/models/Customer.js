@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 const customerSchema = new Schema(
   {
     name: String,
-    email: String,
-    address: String,
     business: String,
+    email: String,
     phone: String,
+    address: String,
   },
   { timestamps: true }
 );
