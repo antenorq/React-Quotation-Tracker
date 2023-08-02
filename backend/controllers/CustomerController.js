@@ -35,64 +35,20 @@ const add = async (req, res) => {
   res.status(201).json(newCustomer);
 };
 
-// //SIGN IN
-// const login = async (req, res) => {
-//   const { email, password } = req.body;
+//UPDATE CUSTOMER
+const update = async (req, res) => {
+  const { name, business, email, phone, address } = req.body;
+  const { id } = req.params;
 
-//   const user = await User.findOne({ email });
+  const customer = await Customer.findById(id);
 
-//   //check if user exists
-//   if (!user) {
-//     res.status(404).json({ errors: ["User not exists"] });
-//     return;
-//   }
-
-//   //check if password matches
-//   if (!(await bcrypt.compare(password, user.password))) {
-//     res.status(422).json({ errors: ["Invalid password"] });
-//     return;
-//   }
-
-//   //return user with token
-//   res.status(201).json({
-//     _id: user._id,
-//     token: generateToken(user._id),
-//   });
-// };
-
-// //GET CURRENT LOGGED IN USER
-// const getCurrentUser = async (req, res) => {
-//   const user = req.user;
-//   res.status(200).json(user);
-// };
-
-// //UPDATE AN USER
-// const update = async (req, res) => {
-//   const { name, email, password } = req.body;
-
-//   const reqUser = req.user;
-//   const user = await User.findById(reqUser._id).select("-password");
-
-//   if (name) {
-//     user.name = name;
-//   }
-
-//   if (email) {
-//     user.email = email;
-//   }
-
-//   if (password) {
-//     //Generate password hash
-//     const salt = await bcrypt.genSalt();
-//     const passwordHash = await bcrypt.hash(password, salt);
-
-//     user.password = passwordHash;
-//   }
-
-//   await user.save();
-
-//   res.status(200).json(user);
-// };
+  if (customer) {
+    await customer.save();
+    res.status(200).json(customer);
+  } else {
+    res.status(422).json({ errors: ["Something went wrong, try again later"] });
+  }
+};
 
 // //GET USER BY ID
 // const getUserById = async (req, res) => {
@@ -115,4 +71,5 @@ const add = async (req, res) => {
 
 module.exports = {
   add,
+  update,
 };

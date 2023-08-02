@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 //controller
-const { add } = require("../controllers/CustomerController");
+const { add, update } = require("../controllers/CustomerController");
 
 //Middlewares
 const validate = require("../middlewares/handleValidation");
@@ -10,12 +10,18 @@ const authGuard = require("../middlewares/authGuard");
 
 const {
   customerAddValidation,
-  userUpdateValidation,
-  loginValidation,
+  customerUpdateValidation,
 } = require("../middlewares/customerValidations");
 
 //Routes
 router.post("/add", authGuard, customerAddValidation(), validate, add);
+router.put(
+  "/update/:id",
+  authGuard,
+  customerUpdateValidation(),
+  validate,
+  update
+);
 
 // router.post("/login", loginValidation(), validate, login);
 // router.get("/profile", authGuard, getCurrentUser);
