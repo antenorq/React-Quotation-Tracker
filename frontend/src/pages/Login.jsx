@@ -35,7 +35,7 @@ const Login = () => {
                       placeholder="Password"
                     />
                     <div className="form_links">
-                      <a href="#">Forgot your password?</a>
+                      <a href="/">Forgot your password?</a>
                     </div>
                   </div>
                   <div className="form_btn">

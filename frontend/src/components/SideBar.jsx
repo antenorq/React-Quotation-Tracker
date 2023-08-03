@@ -1,4 +1,3 @@
-import { useState } from "react";
 import fulllogo from "../assets/img/logowhite.png";
 import halflogo from "../assets/img/logo-small-white.png";
 
@@ -18,33 +17,33 @@ const SideBar = ({ open }) => {
       {/*<!--NAV LIST-->*/}
       <ul className="nav-list">
         <li>
-          <a href="#" className="active">
+          <a href="/" className="active">
             <i className="bx bxs-dashboard"></i>
             <span className="link_name">Overview</span>
           </a>
           <span className="tooltip">Overview</span>
         </li>
         <li>
-          <a href="#">
+          <a href="/">
             <i class="bx bxs-search-alt-2"></i>
             <span className="link_name">Quotation Tracker</span>
           </a>
           <span className="tooltip">Quotation Tracker</span>
         </li>
         <li>
-          <a href="#">
+          <a href="/add_customer">
             <i className="bx bxs-user"></i>
-            <span className="link_name">Add Customer</span>
+            <span className="link_name">Customer</span>
           </a>
-          <span className="tooltip">Add Customer</span>
+          <span className="tooltip">Customer</span>
         </li>
 
         <li>
-          <a href="#">
+          <a href="/">
             <i class="bx bxs-message-square-add"></i>
-            <span className="link_name">Add Quotation</span>
+            <span className="link_name">Quotation</span>
           </a>
-          <span className="tooltip">Add Quotation</span>
+          <span className="tooltip">Quotation</span>
         </li>
 
         <li>

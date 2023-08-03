@@ -1,13 +1,14 @@
-.geral-container {
-  /* border: solid 1px #000; */
-  /* height: calc(100vh - 100px);  */
+/* .geral-container {
+  
   padding: 100px 20px 20px 20px;
 }
 
 .geral-container .white-container {
   padding: 20px;
   background-color: #fff;
-}
+  border-radius: 5px;
+  height: 85vh;
+} */
 
 .card-custom {
   background-color: #e5ecf6;

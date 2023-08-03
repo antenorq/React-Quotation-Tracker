@@ -48,7 +48,7 @@ const Register = () => {
                     <button className="form-btn">Signup</button>
                   </div>
                   <div className="form_links">
-                    <a href="#">Already have an account?</a>
+                    <a href="/">Already have an account?</a>
                   </div>
                 </form>
               </div>
