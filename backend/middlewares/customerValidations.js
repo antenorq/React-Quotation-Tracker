@@ -30,12 +30,16 @@ const customerUpdateValidation = () => {
     body("name")
       .optional()
       .isLength({ min: 3 })
-      .withMessage("Minimum 3 characters"),
+      .withMessage("Name needs minimum 3 characters"),
     body("email").optional().isEmail().withMessage("Enter a valid email"),
-    body("password")
+    body("phone")
       .optional()
-      .isLength({ min: 5 })
-      .withMessage("Password needs Minimum 5 characters"),
+      .isLength({ min: 10 })
+      .withMessage("Phone needs minimum 10 numbers"),
+    body("address")
+      .optional()
+      .isLength({ min: 10 })
+      .withMessage("Address needs minimum 10 caracteres"),
   ];
 };
 

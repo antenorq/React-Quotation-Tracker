@@ -40,36 +40,52 @@ const update = async (req, res) => {
   const { name, business, email, phone, address } = req.body;
   const { id } = req.params;
 
-  const customer = await Customer.findById(id);
+  try {
+    //find Customer by Id
+    const customer = await Customer.findById(id);
 
-  if (customer) {
-    await customer.save();
-    res.status(200).json(customer);
-  } else {
-    res.status(422).json({ errors: ["Something went wrong, try again later"] });
+    if (customer) {
+      if (name) customer.name = name;
+      if (business) customer.business = business;
+      if (email) customer.email = email;
+      if (phone) customer.phone = phone;
+      if (address) customer.address = address;
+
+      //save
+      await customer.save();
+      res.status(200).json(customer);
+    } else {
+      res.status(422).json({
+        errors: ["Customer not found or Something went wrong, try again later"],
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
   }
+
+  //
+  return;
 };
 
-// //GET USER BY ID
-// const getUserById = async (req, res) => {
-//   const { id } = req.params;
+//GET ALL CUSTOMERS
+const getAll = async (req, res) => {
+  try {
+    const customers = await Customer.find();
 
-//   try {
-//     const user = await User.findById(id).select("-password");
-
-//     //check if user exists
-//     if (!user) {
-//       res.status(404).json({ errors: ["User not exist"] });
-//       return;
-//     }
-
-//     res.status(200).json(user);
-//   } catch (error) {
-//     res.status(404).json({ errors: ["User not exist"] });
-//   }
-// };
+    //check if customers exists
+    if (customers) {
+      res.status(200).json(customers);
+    } else {
+      res.status(422).json({ errors: ["Customers list empty"] });
+      return;
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};
 
 module.exports = {
   add,
   update,
+  getAll,
 };
