@@ -25,7 +25,7 @@ const SideBar = ({ open }) => {
         </li>
         <li>
           <a href="/">
-            <i class="bx bxs-search-alt-2"></i>
+            <i className="bx bxs-search-alt-2"></i>
             <span className="link_name">Quotation Tracker</span>
           </a>
           <span className="tooltip">Quotation Tracker</span>
@@ -40,7 +40,7 @@ const SideBar = ({ open }) => {
 
         <li>
           <a href="/">
-            <i class="bx bxs-message-square-add"></i>
+            <i className="bx bxs-message-square-add"></i>
             <span className="link_name">Quotation</span>
           </a>
           <span className="tooltip">Quotation</span>
@@ -48,7 +48,7 @@ const SideBar = ({ open }) => {
 
         <li>
           <Link to={"/login"}>
-            <i class="bx bxs-user-detail"></i>
+            <i className="bx bxs-user-detail"></i>
             <span className="link_name">Admin Users</span>
           </Link>
           <span className="tooltip">Admin Users</span>
