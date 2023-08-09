@@ -1,93 +1,147 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+//bootstrap5
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import Row from "react-bootstrap/Row";
+
+//components
 import Layout from "../components/Layout";
 
-//bootstrap
-import { Button } from "react-bootstrap";
-
-//css
-import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
-import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
+//Toastify
+import { toast } from "react-toastify";
 
 const AddCustomer = () => {
-  const gridRef = useRef(); // Optional - for accessing Grid's API
-  const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
+  const [validated, setValidated] = useState(false);
+  const [name, setName] = useState("");
+  const [business, setBusiness] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
 
-  //const { REACT_APP_API_URL } = process.env;
+  const navigate = useNavigate();
 
-  console.log(process.env.REACT_APP_API_URL + "/api/customers");
-  //Load Customers data from api
-  useEffect(() => {
-    fetch(process.env.REACT_APP_API_URL + "/api/customers")
-      .then((result) => result.json())
-      .then((rowData) => setRowData(rowData));
-  }, []);
+  //SUBMIT
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setValidated(true);
 
-  const onGridReady = useCallback((params) => {
-    gridRef.current.api.sizeColumnsToFit();
+    const form = event.currentTarget;
+    //invalid
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      return;
+    }
 
-    //gridRef.current.columnApi.autoSizeColumns();
+    try {
+      const formData = { name, business, email, phone, address };
 
-    //resize colluns to fit
-    // const allColumnIds = [];
-    // gridRef.current.columnApi.getColumns().forEach((column) => {
-    //   allColumnIds.push(column.getId());
-    // });
-    // gridRef.current.columnApi.autoSizeColumns(allColumnIds, false);
-  }, []);
-
-  // Each Column Definition results in one Column.
-  const [columnDefs, setColumnDefs] = useState([
-    { field: "name" },
-    { field: "business" },
-    { field: "email" },
-    { field: "phone" },
-    { field: "address" },
-  ]);
-
-  // DefaultColDef sets props common to all Columns
-  const defaultColDef = useMemo(() => ({
-    sortable: true,
-    filter: true,
-    resizable: true,
-  }));
-
-  // Example of consuming Grid Event
-  const cellClickedListener = useCallback((event) => {
-    alert("clicked on: " + event.value);
-  }, []);
-
-  // Example using Grid's API
-  const buttonListener = useCallback((e) => {
-    gridRef.current.api.deselectAll();
-  }, []);
+      const { REACT_APP_API_URL } = process.env;
+      const res = await fetch(REACT_APP_API_URL + "/api/customers/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          if (res._id) {
+            navigate("/list_customer");
+          }
+          if (res.errors) {
+            toast.error(res.errors[0]);
+          }
+        })
+        .catch((err) => err);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Layout>
-      <div>
-        {/* Example using Grid's API */}
-        {/* <button onClick={buttonListener}>Push Me</button> */}
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Row className="mb-3">
+          {/*NAME*/}
+          <Form.Group as={Col} md="4">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <Form.Control.Feedback type="invalid">
+              Name Required
+            </Form.Control.Feedback>
+          </Form.Group>
 
-        <Button>Add Customer</Button>
-        <br />
-        <br />
-        <div
-          className="ag-theme-alpine"
-          style={{ width: "100%", height: "80vh" }}
-        >
-          <AgGridReact
-            ref={gridRef} // Ref for accessing Grid's API
-            rowData={rowData} // Row Data for Rows
-            columnDefs={columnDefs} // Column Defs for Columns
-            defaultColDef={defaultColDef} // Default Column Properties
-            animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-            rowSelection="multiple" // Options - allows click selection of rows
-            onCellClicked={cellClickedListener} // Optional - registering for Grid Event
-            onGridReady={onGridReady}
-            suppressMenuHide={true}
-          />
-        </div>
-      </div>
+          {/*BUSINESS*/}
+          <Form.Group as={Col} md="4">
+            <Form.Label>Business</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              value={business}
+              onChange={(e) => setBusiness(e.target.value)}
+            />
+            <Form.Control.Feedback type="invalid">
+              Business Required
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          {/*EMAIL*/}
+          <Form.Group as={Col} md="4">
+            <Form.Label>Email</Form.Label>
+            <InputGroup hasValidation>
+              <Form.Control
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Form.Control.Feedback type="invalid">
+                Email Required
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          {/*ADDRESS*/}
+          <Form.Group as={Col} md="8">
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+            <Form.Control.Feedback type="invalid">
+              Address Required
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          {/*PHONE*/}
+          <Form.Group as={Col} md="4">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control
+              required
+              type="number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <Form.Control.Feedback type="invalid">
+              Phone Required
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Row>
+
+        <Button type="submit">Submit form</Button>
+      </Form>
     </Layout>
   );
 };

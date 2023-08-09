@@ -3,10 +3,12 @@ import "./Layout.css";
 
 import SideBar from "../components/SideBar";
 import NavBarComp from "../components/NavBarComp";
-import { Container } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+//import Alert from "react-bootstrap/Alert";
 
 const Layout = ({ children }) => {
   const [open, setOpen] = useState("open");
+  //const [show, setShow] = useState(false);
 
   //choose the screen size
   const handleResize = () => {
@@ -32,6 +34,9 @@ const Layout = ({ children }) => {
       <section className="main-content">
         <NavBarComp open={open} setOpen={setOpen} />
         <Container fluid className="geral-container">
+          {/* <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+            POp POp oPOp Po
+          </Alert> */}
           <Container fluid className="white-container">
             {children}
           </Container>

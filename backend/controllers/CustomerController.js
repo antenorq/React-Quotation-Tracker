@@ -9,11 +9,11 @@ const add = async (req, res) => {
   const phone_customer = await Customer.findOne({ phone });
 
   if (email_customer) {
-    res.status(422).json({ errors: ["This customer email already exist"] });
+    res.status(409).json({ errors: ["This customer email already exist"] });
     return;
   }
   if (phone_customer) {
-    res.status(422).json({ errors: ["This customer phone already exist"] });
+    res.status(409).json({ errors: ["This customer phone already exist"] });
     return;
   }
 
@@ -28,11 +28,11 @@ const add = async (req, res) => {
 
   // If Something went wrong return error
   if (!newCustomer) {
-    res.status(422).json({ errors: ["Something went wrong, try again later"] });
+    res.status(400).json({ errors: ["Something went wrong, try again later"] });
   }
 
   // If customer was created successfully, return customer
-  res.status(201).json(newCustomer);
+  res.status(200).json(newCustomer);
 };
 
 //UPDATE CUSTOMER

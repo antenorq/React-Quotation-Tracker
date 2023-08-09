@@ -31,10 +31,10 @@ const SideBar = ({ open }) => {
           <span className="tooltip">Quotation Tracker</span>
         </li>
         <li>
-          <a href="/add_customer">
+          <Link to={"/list_customer"}>
             <i className="bx bxs-user"></i>
             <span className="link_name">Customer</span>
-          </a>
+          </Link>
           <span className="tooltip">Customer</span>
         </li>
 
