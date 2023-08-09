@@ -49,6 +49,7 @@ const AddCustomer = () => {
         .then((res) => {
           console.log(res);
           if (res._id) {
+            toast.success("Customer Add Successfully");
             navigate("/list_customer");
           }
           if (res.errors) {
@@ -56,6 +57,8 @@ const AddCustomer = () => {
           }
         })
         .catch((err) => err);
+
+      return res;
     } catch (error) {
       console.log(error);
     }
