@@ -6,7 +6,7 @@ const customerAddValidation = () => {
       .isString()
       .withMessage("The name is mandatory")
       .isLength({ min: 3 })
-      .withMessage("Minimum 3 characters"),
+      .withMessage("Name needs minimum 3 characters"),
     body("email")
       .isString()
       .withMessage("The email is mandatory")
@@ -16,12 +16,12 @@ const customerAddValidation = () => {
       .isString()
       .withMessage("The phone is mandatory")
       .isLength({ min: 10 })
-      .withMessage("phone needs minimum 10 numbers"),
+      .withMessage("Phone needs minimum 10 numbers"),
     body("address")
       .isString()
       .withMessage("The address is mandatory")
       .isLength({ min: 10 })
-      .withMessage("address needs minimum 10 caracteres"),
+      .withMessage("Address needs minimum 10 caracteres"),
   ];
 };
 

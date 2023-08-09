@@ -53,7 +53,7 @@ const login = async (req, res) => {
 
   //check if user exists
   if (!user) {
-    res.status(404).json({ errors: ["User not exists"] });
+    res.status(404).json({ errors: ["Email not found"] });
     return;
   }
 
@@ -63,9 +63,10 @@ const login = async (req, res) => {
     return;
   }
 
-  //return user with token
+  //return user with id,name, token
   res.status(201).json({
     _id: user._id,
+    name: user.name,
     token: generateToken(user._id),
   });
 };

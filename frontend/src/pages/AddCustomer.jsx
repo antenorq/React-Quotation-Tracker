@@ -40,7 +40,7 @@ const AddCustomer = () => {
       const formData = { name, business, email, phone, address };
 
       const { REACT_APP_API_URL } = process.env;
-      const res = await fetch(REACT_APP_API_URL + "/api/customers/add", {
+      await fetch(REACT_APP_API_URL + "/api/customers/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -53,14 +53,15 @@ const AddCustomer = () => {
             navigate("/list_customer");
           }
           if (res.errors) {
-            toast.error(res.errors[0]);
+            res.errors.map((error) => toast.error(error));
           }
         })
-        .catch((err) => err);
-
-      return res;
+        .catch((err) => {
+          toast.error(err);
+        });
     } catch (error) {
       console.log(error);
+      toast.error(error);
     }
   };
 

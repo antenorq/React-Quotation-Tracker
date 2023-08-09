@@ -1,8 +1,57 @@
+import { useContext, useState } from "react";
+
 import "./Login.css";
 import loginImg from "../assets/img/login-img.png";
 import logo from "../assets/img/logo.png";
+import { useNavigate } from "react-router-dom";
+
+//Context API
+import { AuthContext } from "../context/AuthContext";
+
+//Toastify
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { setUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  //SUBMIT
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const data = { email, password };
+
+      const { REACT_APP_API_URL } = process.env;
+      await fetch(REACT_APP_API_URL + "/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res._id) {
+            toast.success("User Logged Successfuly");
+            setEmail("");
+            setPassword("");
+            setUser(res);
+            navigate("/");
+          }
+          if (res.errors) {
+            res.errors.map((error) => toast.error(error));
+          }
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } catch (error) {
+      toast.error("popopo");
+    }
+  };
+
   return (
     <main>
       <section className="form_module">
@@ -22,8 +71,10 @@ const Login = () => {
                     <input
                       type="text"
                       className="form-control"
-                      name=""
+                      name="email"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="form-group">
@@ -31,15 +82,19 @@ const Login = () => {
                     <input
                       type="password"
                       className="form-control"
-                      name=""
+                      name="password"
                       placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="form_links">
                       <a href="/">Forgot your password?</a>
                     </div>
                   </div>
                   <div className="form_btn">
-                    <button className="form-btn">Login</button>
+                    <button className="form-btn" onClick={handleSubmit}>
+                      Login
+                    </button>
                   </div>
                 </form>
               </div>

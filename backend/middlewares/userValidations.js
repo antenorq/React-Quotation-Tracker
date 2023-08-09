@@ -45,7 +45,7 @@ const userUpdateValidation = () => {
     body("name")
       .optional()
       .isLength({ min: 3 })
-      .withMessage("Minimum 3 characters"),
+      .withMessage("Name need minimum 3 characters"),
     body("email").optional().isEmail().withMessage("Enter a valid email"),
     body("password")
       .optional()

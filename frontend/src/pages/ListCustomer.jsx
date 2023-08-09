@@ -47,33 +47,49 @@ const ListCustomer = () => {
   //   gridRef.current.api.deselectAll();
   // }, []);
 
+  const onPageSizeChanged = useCallback(() => {
+    var value = document.getElementById("page-size").value;
+    gridRef.current.api.paginationSetPageSize(Number(value));
+  }, []);
+
   return (
     <Layout>
-      <div>
-        {/* Example using Grid's API */}
-        {/* <button onClick={buttonListener}>Push Me</button> */}
-
-        <Link to={"/add_customer"}>
-          <Button>Add Customer</Button>
-        </Link>
-        <br />
-        <br />
-        <div
-          className="ag-theme-alpine"
-          style={{ width: "100%", height: "80vh" }}
-        >
-          <AgGridReact
-            ref={gridRef} // Ref for accessing Grid's API
-            rowData={rowData} // Row Data for Rows
-            columnDefs={columnDefs} // Column Defs for Columns
-            defaultColDef={{ sortable: true, filter: true, resizable: true }} // Default Column Properties
-            animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-            rowSelection="multiple" // Options - allows click selection of rows
-            onCellClicked={cellClickedListener} // Optional - registering for Grid Event
-            onGridReady={onGridReady}
-            suppressMenuHide={true}
-          />
+      {/* Example using Grid's API */}
+      {/* <button onClick={buttonListener}>Push Me</button> */}
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+          <Link to={"/add_customer"}>
+            <Button>Add Customer</Button>
+          </Link>
         </div>
+        <div>
+          Page Size:{" "}
+          <select onChange={onPageSizeChanged} id="page-size">
+            <option value="15">15</option>
+            <option value="50">100</option>
+            <option value="100">500</option>
+            <option value="500">1000</option>
+          </select>
+        </div>
+      </div>
+      <br />
+      <div
+        className="ag-theme-alpine"
+        style={{ width: "100%", height: "100%" }}
+      >
+        <AgGridReact
+          ref={gridRef} // Ref for accessing Grid's API
+          rowData={rowData} // Row Data for Rows
+          columnDefs={columnDefs} // Column Defs for Columns
+          defaultColDef={{ sortable: true, filter: true, resizable: true }} // Default Column Properties
+          animateRows={true} // Optional - set to 'true' to have rows animate when sorted
+          rowSelection="multiple" // Options - allows click selection of rows
+          onCellClicked={cellClickedListener} // Optional - registering for Grid Event
+          onGridReady={onGridReady}
+          suppressMenuHide={true}
+          pagination={true}
+          paginationPageSize={15}
+        />
       </div>
     </Layout>
   );

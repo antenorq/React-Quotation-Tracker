@@ -29,6 +29,7 @@ const add = async (req, res) => {
   // If Something went wrong return error
   if (!newCustomer) {
     res.status(400).json({ errors: ["Something went wrong, try again later"] });
+    return;
   }
 
   // If customer was created successfully, return customer

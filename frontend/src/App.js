@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext } from "react";
 
 //CSS
 import "./App.css";
@@ -17,8 +18,12 @@ import AddCustomer from "./pages/AddCustomer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
+//Context API
+import { AuthContext } from "./context/AuthContext";
+
 function App() {
-  const user = true;
+  const { user } = useContext(AuthContext);
+  console.log("app.js user State:", user);
 
   return (
     <BrowserRouter>
@@ -28,7 +33,6 @@ function App() {
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl={false}
         pauseOnFocusLoss
         draggable={false}
         pauseOnHover
