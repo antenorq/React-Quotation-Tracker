@@ -1,7 +1,7 @@
 import fulllogo from "../assets/img/logowhite.png";
 import halflogo from "../assets/img/logo-small-white.png";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 //Context
@@ -11,11 +11,12 @@ import { AuthContext } from "../context/AuthContext";
 import "./SideBar.css";
 
 const SideBar = ({ open }) => {
-  const { setUser } = useContext(AuthContext);
+  const [active, setActive] = useState("overview"); // Default active item
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const { logout } = useContext(AuthContext);
+
+  const handleActiveMenu = (itemName) => {
+    setActive(itemName);
   };
 
   return (
@@ -28,7 +29,11 @@ const SideBar = ({ open }) => {
       {/*<!--NAV LIST-->*/}
       <ul className="nav-list">
         <li>
-          <Link to={"/"} className="active">
+          <Link
+            to={"/"}
+            className={active === "overview" ? "active" : ""}
+            onClick={() => handleActiveMenu("overview")}
+          >
             <i className="bx bxs-dashboard"></i>
             <span className="link_name">Overview</span>
           </Link>
@@ -42,7 +47,11 @@ const SideBar = ({ open }) => {
           <span className="tooltip">Quotation Tracker</span>
         </li>
         <li>
-          <Link to={"/list_customer"}>
+          <Link
+            to={"/list_customer"}
+            className={active === "list_customer" ? "active" : ""}
+            onClick={() => handleActiveMenu("list_customer")}
+          >
             <i className="bx bxs-user"></i>
             <span className="link_name">Customer</span>
           </Link>
