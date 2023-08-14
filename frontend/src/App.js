@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 //CSS
 import "./App.css";
@@ -22,8 +22,15 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const { user } = useContext(AuthContext);
-  console.log("app.js user State:", user);
+  const { user, setUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    // Check if user and token are stored in localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, [setUser]);
 
   return (
     <BrowserRouter>
@@ -40,7 +47,7 @@ function App() {
       />
       <Routes>
         <Route path="/" element={user ? <Home /> : <Login />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={user ? <Home /> : <Login />} />
         <Route path="/register" element={<Register />} />
         <Route
           path="/list_customer"

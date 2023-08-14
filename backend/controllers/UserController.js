@@ -41,7 +41,7 @@ const register = async (req, res) => {
   // If use was created successfully, return the token
   res.status(201).json({
     _id: newUser._id,
-    token: generateToken(newUser._id),
+    //token: generateToken(newUser._id),
   });
 };
 

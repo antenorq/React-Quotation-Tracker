@@ -16,8 +16,8 @@ const {
 //Routes
 //router.post("/add", authGuard, customerAddValidation(), validate, add);
 router.post("/add", customerAddValidation(), validate, add);
-//router.get("/", authGuard, getAll);
-router.get("/", getAll);
+router.get("/", authGuard, getAll);
+//router.get("/", getAll);
 router.put(
   "/update/:id",
   authGuard,

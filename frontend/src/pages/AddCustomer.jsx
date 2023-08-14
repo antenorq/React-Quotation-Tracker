@@ -39,15 +39,13 @@ const AddCustomer = () => {
     try {
       const formData = { name, business, email, phone, address };
 
-      const { REACT_APP_API_URL } = process.env;
-      await fetch(REACT_APP_API_URL + "/api/customers/add", {
+      await fetch(process.env.REACT_APP_API_URL + "/api/customers/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
           if (res._id) {
             toast.success("Customer Add Successfully");
             navigate("/list_customer");
@@ -60,7 +58,6 @@ const AddCustomer = () => {
           toast.error(err);
         });
     } catch (error) {
-      console.log(error);
       toast.error(error);
     }
   };

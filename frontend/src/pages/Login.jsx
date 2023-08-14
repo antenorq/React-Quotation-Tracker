@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import "./Login.css";
 import loginImg from "../assets/img/login-img.png";
 import logo from "../assets/img/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 //Context API
 import { AuthContext } from "../context/AuthContext";
@@ -25,10 +25,11 @@ const Login = () => {
       event.preventDefault();
       const data = { email, password };
 
-      const { REACT_APP_API_URL } = process.env;
-      await fetch(REACT_APP_API_URL + "/api/users/login", {
+      await fetch(process.env.REACT_APP_API_URL + "/api/users/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       })
         .then((res) => res.json())
@@ -38,6 +39,8 @@ const Login = () => {
             setEmail("");
             setPassword("");
             setUser(res);
+            localStorage.setItem("user", JSON.stringify(res));
+            console.log(res);
             navigate("/");
           }
           if (res.errors) {
@@ -96,6 +99,8 @@ const Login = () => {
                       Login
                     </button>
                   </div>
+                  <br />
+                  <Link to="/register">Don't have an account? Sign Up</Link>
                 </form>
               </div>
             </div>

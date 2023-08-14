@@ -1,12 +1,23 @@
 import fulllogo from "../assets/img/logowhite.png";
 import halflogo from "../assets/img/logo-small-white.png";
 
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+
+//Context
+import { AuthContext } from "../context/AuthContext";
 
 //CSS
 import "./SideBar.css";
 
 const SideBar = ({ open }) => {
+  const { setUser } = useContext(AuthContext);
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+
   return (
     <div className={"sidebar " + open}>
       {/*<!-- LOGO -->*/}
@@ -17,10 +28,10 @@ const SideBar = ({ open }) => {
       {/*<!--NAV LIST-->*/}
       <ul className="nav-list">
         <li>
-          <a href="/" className="active">
+          <Link to={"/"} className="active">
             <i className="bx bxs-dashboard"></i>
             <span className="link_name">Overview</span>
-          </a>
+          </Link>
           <span className="tooltip">Overview</span>
         </li>
         <li>
@@ -61,7 +72,7 @@ const SideBar = ({ open }) => {
           <span className="tooltip">Register</span>
         </li>
 
-        <li className="logout">
+        <li className="logout" onClick={logout}>
           <div className="profile_details">
             <div className="profile_content">
               <div className="link_name">Logout</div>

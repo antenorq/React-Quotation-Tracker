@@ -1,8 +1,58 @@
+import { useState } from "react";
+
 import "./Register.css";
 import loginImg from "../assets/img/login-img.png";
 import logo from "../assets/img/logo.png";
 
+import { Link, useNavigate } from "react-router-dom";
+
+//Toastify
+import { toast } from "react-toastify";
+
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  //SUBMIT
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const data = { name, email, password, confirmPassword };
+
+      await fetch(process.env.REACT_APP_API_URL + "/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res._id) {
+            toast.success("User Registered Successfuly");
+            setName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            console.log(res);
+            navigate("/login");
+          }
+          if (res.errors) {
+            res.errors.map((error) => toast.error(error));
+          }
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } catch (error) {
+      toast.error("popopo");
+    }
+  };
+
   return (
     <main>
       <section className="form_module">
@@ -18,12 +68,25 @@ const Register = () => {
               <div className="form_inner">
                 <form>
                   <div className="form-group">
-                    <label>Username/Email</label>
+                    <label>Username</label>
                     <input
                       type="text"
                       className="form-control"
-                      name=""
+                      name="name"
+                      placeholder="Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="email"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="form-group">
@@ -31,8 +94,10 @@ const Register = () => {
                     <input
                       type="password"
                       className="form-control"
-                      name=""
+                      name="password"
                       placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                   <div className="form-group">
@@ -41,14 +106,18 @@ const Register = () => {
                       type="password"
                       className="form-control"
                       name=""
-                      placeholder="Password"
+                      placeholder="Confirm Password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </div>
                   <div className="form_btn">
-                    <button className="form-btn">Signup</button>
+                    <button className="form-btn" onClick={handleSubmit}>
+                      Signup
+                    </button>
                   </div>
                   <div className="form_links">
-                    <a href="/">Already have an account?</a>
+                    <Link to="/login">Already have an account?</Link>
                   </div>
                 </form>
               </div>

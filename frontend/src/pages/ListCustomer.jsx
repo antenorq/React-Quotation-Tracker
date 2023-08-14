@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useContext } from "react";
 import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 import Layout from "../components/Layout";
 
@@ -10,18 +10,41 @@ import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
 import { Link } from "react-router-dom";
 
+//Toastify
+import { toast } from "react-toastify";
+
+//Context API
+import { AuthContext } from "../context/AuthContext";
+
 const ListCustomer = () => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
-  const { REACT_APP_API_URL } = process.env;
+  const { user } = useContext(AuthContext);
 
   //Load Customers data from api
   useEffect(() => {
-    fetch(REACT_APP_API_URL + "/api/customers")
-      .then((result) => result.json())
-      .then((rowData) => setRowData(rowData));
-  }, [REACT_APP_API_URL]);
+    try {
+      fetch(process.env.REACT_APP_API_URL + "/api/customers", {
+        headers: {
+          Authorization: "Bearer " + user.token,
+        },
+      })
+        .then((result) => result.json())
+        .then((res) => {
+          if (res.errors) {
+            res.errors.map((error) => toast.error(error));
+          } else {
+            setRowData(res);
+          }
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [user.token]);
 
   const onGridReady = useCallback((params) => {
     gridRef.current.api.sizeColumnsToFit();
@@ -35,6 +58,7 @@ const ListCustomer = () => {
     { field: "email" },
     { field: "phone" },
     { field: "address" },
+    { field: "createdAt", headerName: "Date Created", sort: "desc" },
   ]);
 
   // Example of consuming Grid Event
