@@ -10,17 +10,6 @@
   height: 85vh;
 } */
 
-.card-custom {
-  background-color: #e5ecf6;
-  border: none;
-  padding: 10px;
-}
-
-.card-custom-events {
-  border: none;
-  background-color: #f4f6f8;
-  height: auto;
-}
 .title-content {
   margin-bottom: 20px;
 }
@@ -72,9 +61,4 @@
 
 .bg_green {
   background-color: #26a288;
-}
-
-.cardHeader-custom-events {
-  padding: 15px;
-  background-color: #e5ecf6;
 }

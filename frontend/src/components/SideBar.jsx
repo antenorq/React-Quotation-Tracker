@@ -1,8 +1,8 @@
 import fulllogo from "../assets/img/logowhite.png";
 import halflogo from "../assets/img/logo-small-white.png";
 
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 //Context
 import { AuthContext } from "../context/AuthContext";
@@ -11,13 +11,9 @@ import { AuthContext } from "../context/AuthContext";
 import "./SideBar.css";
 
 const SideBar = ({ open }) => {
-  const [active, setActive] = useState("overview"); // Default active item
-
   const { logout } = useContext(AuthContext);
 
-  const handleActiveMenu = (itemName) => {
-    setActive(itemName);
-  };
+  const path = useLocation().pathname;
 
   return (
     <div className={"sidebar " + open}>
@@ -29,28 +25,21 @@ const SideBar = ({ open }) => {
       {/*<!--NAV LIST-->*/}
       <ul className="nav-list">
         <li>
-          <Link
-            to={"/"}
-            className={active === "overview" ? "active" : ""}
-            onClick={() => handleActiveMenu("overview")}
-          >
+          <Link to={"/"} className={path === "/" ? "active" : ""}>
             <i className="bx bxs-dashboard"></i>
             <span className="link_name">Overview</span>
           </Link>
           <span className="tooltip">Overview</span>
         </li>
-        <li>
-          <a href="/">
-            <i className="bx bxs-search-alt-2"></i>
-            <span className="link_name">Quotation Tracker</span>
-          </a>
-          <span className="tooltip">Quotation Tracker</span>
-        </li>
+
         <li>
           <Link
             to={"/list_customer"}
-            className={active === "list_customer" ? "active" : ""}
-            onClick={() => handleActiveMenu("list_customer")}
+            className={
+              path === "/list_customer" || path === "/add_customer"
+                ? "active"
+                : ""
+            }
           >
             <i className="bx bxs-user"></i>
             <span className="link_name">Customer</span>
@@ -59,27 +48,34 @@ const SideBar = ({ open }) => {
         </li>
 
         <li>
-          <a href="/">
+          <Link
+            to={"/list_quotation"}
+            className={
+              path === "/list_quotation" || path === "/add_quotation"
+                ? "active"
+                : ""
+            }
+          >
             <i className="bx bxs-message-square-add"></i>
             <span className="link_name">Quotation</span>
-          </a>
+          </Link>
           <span className="tooltip">Quotation</span>
         </li>
 
         <li>
-          <Link to={"/login"}>
+          <Link to={"/login"} className={path === "/login" ? "active" : ""}>
             <i className="bx bxs-user-detail"></i>
             <span className="link_name">Admin Users</span>
           </Link>
           <span className="tooltip">Admin Users</span>
         </li>
-        <li>
+        {/* <li>
           <Link to={"/register"}>
             <i className="bx bxs-help-circle"></i>
             <span className="link_name">Register</span>
           </Link>
           <span className="tooltip">Register</span>
-        </li>
+        </li> */}
 
         <li className="logout" onClick={logout}>
           <div className="profile_details">

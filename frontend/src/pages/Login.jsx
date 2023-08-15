@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import "./Login.css";
 import loginImg from "../assets/img/login-img.png";
 import logo from "../assets/img/logo.png";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //Context API
 import { AuthContext } from "../context/AuthContext";
@@ -100,7 +100,7 @@ const Login = () => {
                     </button>
                   </div>
                   <br />
-                  <Link to="/register">Don't have an account? Sign Up</Link>
+                  {/* <Link to="/register">Don't have an account? Sign Up</Link> */}
                 </form>
               </div>
             </div>

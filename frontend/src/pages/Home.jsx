@@ -41,8 +41,8 @@ const Home = () => {
       </Row>
 
       {/*// EVENTS//*/}
-      <Card className="card-custom-events">
-        <Card.Header className="cardHeader-custom-events" as="h5">
+      <Card className="card-custom-area">
+        <Card.Header className="cardHeader-custom" as="h5">
           Quotation Tracker
         </Card.Header>
         <Card.Body>

@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 //Context API
 import { AuthContext } from "../context/AuthContext";
 
-const ListCustomer = () => {
+const ListQuotation = () => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
@@ -26,13 +26,14 @@ const ListCustomer = () => {
   //Load Customers data from api
   useEffect(() => {
     try {
-      fetch(process.env.REACT_APP_API_URL + "/api/customers/list", {
+      fetch(process.env.REACT_APP_API_URL + "/api/quotation/list", {
         headers: {
           Authorization: "Bearer " + user.token,
         },
       })
         .then((result) => result.json())
         .then((res) => {
+          console.log(res);
           if (res.errors) {
             res.errors.map((error) => toast.error(error));
           } else {
@@ -54,11 +55,18 @@ const ListCustomer = () => {
 
   // Each Column Definition results in one Column.
   const [columnDefs] = useState([
-    { field: "name" },
-    { field: "business" },
-    { field: "email" },
-    { field: "phone" },
-    { field: "address" },
+    {
+      field: "customerId",
+      cellRenderer: (data) => {
+        return data.value;
+      },
+    },
+    { field: "Salesperson" },
+    { field: "status" },
+    { field: "quoteGiven" },
+    { field: "date" },
+    { field: "followUp" },
+    { field: "quoteDetails" },
     {
       field: "createdAt",
       headerName: "Date Created",
@@ -90,8 +98,8 @@ const ListCustomer = () => {
       {/* <button onClick={buttonListener}>Push Me</button> */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
-          <Link to={"/add_customer"}>
-            <Button>Add Customer</Button>
+          <Link to={"/add_quotation"}>
+            <Button>Add Quotation</Button>
           </Link>
         </div>
         <div>
@@ -127,4 +135,4 @@ const ListCustomer = () => {
   );
 };
 
-export default ListCustomer;
+export default ListQuotation;

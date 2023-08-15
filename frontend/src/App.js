@@ -13,6 +13,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ListCustomer from "./pages/ListCustomer";
 import AddCustomer from "./pages/AddCustomer";
+import ListQuotation from "./pages/ListQuotation";
+//import AddQuotation from "./pages/AddQuotation";
 
 //Toastify
 import { ToastContainer } from "react-toastify";
@@ -54,8 +56,16 @@ function App() {
           element={user ? <ListCustomer /> : <Login />}
         />
         <Route
+          path="/list_quotation"
+          element={user ? <ListQuotation /> : <Login />}
+        />
+        <Route
           path="/add_customer"
           element={user ? <AddCustomer /> : <Login />}
+        />
+        <Route
+          path="/add_quotation"
+          element={user ? <ListQuotation /> : <Login />}
         />
       </Routes>
     </BrowserRouter>

@@ -13,6 +13,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [type, setType] = useState(2);
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Register = () => {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const data = { name, email, password, confirmPassword };
+      const data = { name, email, password, confirmPassword, type };
 
       await fetch(process.env.REACT_APP_API_URL + "/api/users/register", {
         method: "POST",
@@ -111,6 +112,20 @@ const Register = () => {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </div>
+                  <div className="form-group">
+                    <label>User Type</label>
+                    <select
+                      name="type"
+                      className="form-control"
+                      disabled
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                    >
+                      <option value="1">Admin</option>
+                      <option value="2">Salesperson</option>
+                    </select>
+                  </div>
+
                   <div className="form_btn">
                     <button className="form-btn" onClick={handleSubmit}>
                       Signup

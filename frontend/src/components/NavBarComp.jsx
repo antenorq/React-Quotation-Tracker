@@ -25,7 +25,10 @@ const NavBarComp = ({ open, setOpen }) => {
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
         {/* <Navbar.Collapse id="basic-navbar-nav"> */}
         <Nav className="justify-content-end flex-grow-1 pe-5">
-          <NavDropdown title="Manager" id="basic-nav-dropdown">
+          <NavDropdown
+            title={(user.type = 2 ? "Salesperson" : "Admin")}
+            id="basic-nav-dropdown"
+          >
             <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">Info</NavDropdown.Item>
             <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>

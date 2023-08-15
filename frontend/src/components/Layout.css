@@ -8,3 +8,21 @@
   border-radius: 5px;
   height: 85vh;
 }
+
+/*///////////  CARDS ///////////////*/
+.card-custom {
+  background-color: #e5ecf6;
+  border: none;
+  padding: 10px;
+}
+
+.card-custom-area {
+  border: none;
+  background-color: #f4f6f8;
+  height: auto;
+}
+
+.cardHeader-custom {
+  padding: 15px;
+  background-color: #e5ecf6;
+}

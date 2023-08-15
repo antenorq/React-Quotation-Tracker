@@ -6,7 +6,7 @@ const quotationSchema = new Schema(
     customerId: mongoose.ObjectId,
     userId: mongoose.ObjectId,
     status: String,
-    quoteGiven: String,
+    quoteGiven: Number,
     date: Date,
     followUp: Date,
     quoteDetails: String,

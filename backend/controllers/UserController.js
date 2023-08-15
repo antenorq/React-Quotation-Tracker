@@ -12,7 +12,7 @@ const generateToken = (id) => {
 
 // REGISTER USER
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, type } = req.body;
 
   //check if user exists
   const user = await User.findOne({ email });
@@ -31,6 +31,7 @@ const register = async (req, res) => {
     name,
     email,
     password: passwordHash,
+    type,
   });
 
   // If Something went wrong return error
@@ -58,7 +59,7 @@ const login = async (req, res) => {
   }
 
   //check if password matches
-  if (!(await bcrypt.compare(password, user.password))) {
+  if (!bcrypt.compare(password, user.password)) {
     res.status(422).json({ errors: ["Invalid password"] });
     return;
   }
@@ -67,6 +68,7 @@ const login = async (req, res) => {
   res.status(201).json({
     _id: user._id,
     name: user.name,
+    type: user.type,
     token: generateToken(user._id),
   });
 };
@@ -79,7 +81,7 @@ const getCurrentUser = async (req, res) => {
 
 //UPDATE AN USER
 const update = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, type } = req.body;
 
   const reqUser = req.user;
   const user = await User.findById(reqUser._id).select("-password");
@@ -90,6 +92,10 @@ const update = async (req, res) => {
 
   if (email) {
     user.email = email;
+  }
+
+  if (type) {
+    user.type = type;
   }
 
   if (password) {

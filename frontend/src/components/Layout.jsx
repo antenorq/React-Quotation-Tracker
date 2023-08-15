@@ -34,9 +34,6 @@ const Layout = ({ children }) => {
       <section className="main-content">
         <NavBarComp open={open} setOpen={setOpen} />
         <Container fluid className="geral-container">
-          {/* <Alert variant="danger" onClose={() => setShow(false)} dismissible>
-            POp POp oPOp Po
-          </Alert> */}
           <Container fluid className="white-container">
             {children}
           </Container>
