@@ -59,8 +59,18 @@ const ListQuotation = () => {
     { field: "userId.name", headerName: "Salesperson" },
     { field: "status" },
     { field: "quoteGiven" },
-    { field: "date" },
-    { field: "followUp" },
+    {
+      field: "date",
+      cellRenderer: (data) => {
+        return moment(data.value).format("YYYY-MM-DD");
+      },
+    },
+    {
+      field: "followUp",
+      cellRenderer: (data) => {
+        return moment(data.value).format("YYYY-MM-DD");
+      },
+    },
     { field: "quoteDetails" },
     {
       field: "createdAt",
@@ -74,7 +84,9 @@ const ListQuotation = () => {
 
   // Example of consuming Grid Event
   const cellClickedListener = useCallback((event) => {
-    alert("clicked on: " + event.value);
+    if (event.colDef.field === "quoteDetails") {
+      alert("Quote Details: " + event.value);
+    }
   }, []);
 
   // Example using Grid's API

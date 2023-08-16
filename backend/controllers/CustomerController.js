@@ -71,7 +71,7 @@ const update = async (req, res) => {
 //GET ALL CUSTOMERS
 const getAll = async (req, res) => {
   try {
-    const customers = await Customer.find();
+    const customers = await Customer.find().sort({ createdAt: "desc" });
 
     //check if customers exists
     if (customers) {

@@ -14,7 +14,7 @@ import Register from "./pages/Register";
 import ListCustomer from "./pages/ListCustomer";
 import AddCustomer from "./pages/AddCustomer";
 import ListQuotation from "./pages/ListQuotation";
-//import AddQuotation from "./pages/AddQuotation";
+import AddQuotation from "./pages/AddQuotation";
 
 //Toastify
 import { ToastContainer } from "react-toastify";
@@ -65,7 +65,7 @@ function App() {
         />
         <Route
           path="/add_quotation"
-          element={user ? <ListQuotation /> : <Login />}
+          element={user ? <AddQuotation /> : <Login />}
         />
       </Routes>
     </BrowserRouter>

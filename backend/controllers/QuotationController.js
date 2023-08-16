@@ -68,18 +68,19 @@ const update = async (req, res) => {
 //GET ALL QUOTATIONS
 const getAll = async (req, res) => {
   try {
+    let quotation;
     //ADMIN
     if (req.user.type === 1) {
-      console.log("ADMIN");
+      quotation = await Quotation.find()
+        .populate("customerId")
+        .populate("userId");
     }
     //SALESPERSON
     if (req.user.type === 2) {
-      console.log("SALESPERON");
+      quotation = await Quotation.find({ userId: req.user._id })
+        .populate("customerId")
+        .populate("userId");
     }
-
-    const quotation = await Quotation.find()
-      .populate("customerId")
-      .populate("userId");
 
     //check if quotation exists
     if (quotation) {
