@@ -55,13 +55,8 @@ const ListQuotation = () => {
 
   // Each Column Definition results in one Column.
   const [columnDefs] = useState([
-    {
-      field: "customerId",
-      cellRenderer: (data) => {
-        return data.value;
-      },
-    },
-    { field: "Salesperson" },
+    { field: "customerId.name", headerName: "Customer" },
+    { field: "userId.name", headerName: "Salesperson" },
     { field: "status" },
     { field: "quoteGiven" },
     { field: "date" },

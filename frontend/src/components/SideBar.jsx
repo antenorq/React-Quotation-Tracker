@@ -69,13 +69,6 @@ const SideBar = ({ open }) => {
           </Link>
           <span className="tooltip">Admin Users</span>
         </li>
-        {/* <li>
-          <Link to={"/register"}>
-            <i className="bx bxs-help-circle"></i>
-            <span className="link_name">Register</span>
-          </Link>
-          <span className="tooltip">Register</span>
-        </li> */}
 
         <li className="logout" onClick={logout}>
           <div className="profile_details">
