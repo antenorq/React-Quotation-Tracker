@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useContext } from "react";
 import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 import Layout from "../components/Layout";
-import * as moment from "moment";
+import moment from "moment";
 
 //bootstrap
 import { Button } from "react-bootstrap";
@@ -44,7 +44,7 @@ const ListQuotation = () => {
           toast.error(err);
         });
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
   }, [user.token]);
 
@@ -58,7 +58,12 @@ const ListQuotation = () => {
     { field: "customerId.name", headerName: "Customer" },
     { field: "userId.name", headerName: "Salesperson" },
     { field: "status" },
-    { field: "quoteGiven" },
+    {
+      field: "quoteGiven",
+      cellRenderer: (data) => {
+        return "$" + data.value;
+      },
+    },
     {
       field: "date",
       cellRenderer: (data) => {
@@ -80,9 +85,30 @@ const ListQuotation = () => {
         return moment(data.value).format("YYYY-MM-DD");
       },
     },
+    {
+      field: "Actions",
+
+      cellClass: "ag-right-aligned-cell",
+      cellRenderer: (row) => {
+        return (
+          <>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleEdit(row.data)}
+            >
+              <i className="bx bxs-pencil"></i>
+            </Button>{" "}
+            <Button variant="danger" size="sm">
+              <i className="bx bx-x"></i>
+            </Button>
+          </>
+        );
+      },
+    },
   ]);
 
-  // Example of consuming Grid Event
+  // Click in the cell
   const cellClickedListener = useCallback((event) => {
     if (event.colDef.field === "quoteDetails") {
       alert("Quote Details: " + event.value);
@@ -98,6 +124,11 @@ const ListQuotation = () => {
     var value = document.getElementById("page-size").value;
     gridRef.current.api.paginationSetPageSize(Number(value));
   }, []);
+
+  //Edit Function
+  const handleEdit = (rowData) => {
+    console.log(rowData);
+  };
 
   return (
     <Layout>
@@ -120,10 +151,7 @@ const ListQuotation = () => {
         </div>
       </div>
       <br />
-      <div
-        className="ag-theme-alpine"
-        style={{ width: "100%", height: "100%" }}
-      >
+      <div className="ag-theme-alpine" style={{ width: "100%", height: "90%" }}>
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API
           rowData={rowData} // Row Data for Rows
@@ -135,7 +163,7 @@ const ListQuotation = () => {
           onGridReady={onGridReady}
           suppressMenuHide={true}
           pagination={true}
-          paginationPageSize={15}
+          paginationPageSize={14}
         />
       </div>
     </Layout>
