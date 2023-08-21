@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useContext } from "react";
 import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 import Layout from "../components/Layout";
-import * as moment from "moment";
+import moment from "moment";
 
 //bootstrap
 import { Button } from "react-bootstrap";
@@ -40,10 +40,10 @@ const ListCustomer = () => {
           }
         })
         .catch((err) => {
-          toast.error(err);
+          toast.error(err.message);
         });
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
   }, [user.token]);
 
@@ -105,10 +105,7 @@ const ListCustomer = () => {
         </div>
       </div>
       <br />
-      <div
-        className="ag-theme-alpine"
-        style={{ width: "100%", height: "100%" }}
-      >
+      <div className="ag-theme-alpine" style={{ width: "100%", height: "100%" }}>
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API
           rowData={rowData} // Row Data for Rows

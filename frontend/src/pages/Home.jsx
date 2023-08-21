@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import { Row, Col, Card } from "react-bootstrap";
 import "./Home.css";
+import ListQuotation from "./ListQuotation";
 
 const Home = () => {
   return (
@@ -45,7 +46,9 @@ const Home = () => {
         <Card.Header className="cardHeader-custom" as="h5">
           Quotation Tracker
         </Card.Header>
-        <Card.Body>Table here</Card.Body>
+        <Card.Body>
+          <ListQuotation layoutActive="false" />
+        </Card.Body>
       </Card>
     </Layout>
   );

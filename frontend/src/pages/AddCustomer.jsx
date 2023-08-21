@@ -86,44 +86,23 @@ const AddCustomer = () => {
               {/*NAME*/}
               <Form.Group as={Col} md="4">
                 <Form.Label>Name</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Name Required
-                </Form.Control.Feedback>
+                <Form.Control required type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <Form.Control.Feedback type="invalid">Name Required</Form.Control.Feedback>
               </Form.Group>
 
               {/*BUSINESS*/}
               <Form.Group as={Col} md="4">
                 <Form.Label>Business</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  value={business}
-                  onChange={(e) => setBusiness(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Business Required
-                </Form.Control.Feedback>
+                <Form.Control required type="text" value={business} onChange={(e) => setBusiness(e.target.value)} />
+                <Form.Control.Feedback type="invalid">Business Required</Form.Control.Feedback>
               </Form.Group>
 
               {/*EMAIL*/}
               <Form.Group as={Col} md="4">
                 <Form.Label>Email</Form.Label>
                 <InputGroup hasValidation>
-                  <Form.Control
-                    required
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Email Required
-                  </Form.Control.Feedback>
+                  <Form.Control required type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <Form.Control.Feedback type="invalid">Email Required</Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
             </Row>
@@ -132,29 +111,15 @@ const AddCustomer = () => {
               {/*ADDRESS*/}
               <Form.Group as={Col} md="8">
                 <Form.Label>Address</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Address Required
-                </Form.Control.Feedback>
+                <Form.Control required type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                <Form.Control.Feedback type="invalid">Address Required</Form.Control.Feedback>
               </Form.Group>
 
               {/*PHONE*/}
               <Form.Group as={Col} md="4">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Phone Required
-                </Form.Control.Feedback>
+                <Form.Control required type="number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                <Form.Control.Feedback type="invalid">Phone Required</Form.Control.Feedback>
               </Form.Group>
             </Row>
 

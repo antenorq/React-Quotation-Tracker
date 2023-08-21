@@ -53,7 +53,7 @@ const Login = () => {
           toast.error(err);
         });
     } catch (error) {
-      toast.error("popopo");
+      toast.error(error);
     }
   };
 
@@ -73,14 +73,7 @@ const Login = () => {
                 <form>
                   <div className="form-group">
                     <label>Username/Email</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="email"
-                      placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <input type="text" className="form-control" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                   </div>
                   <div className="form-group">
                     <label>Password</label>

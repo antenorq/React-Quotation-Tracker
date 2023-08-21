@@ -6,7 +6,7 @@ import NavBarComp from "../components/NavBarComp";
 import Container from "react-bootstrap/Container";
 //import Alert from "react-bootstrap/Alert";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, active }) => {
   const [open, setOpen] = useState("open");
   //const [show, setShow] = useState(false);
 

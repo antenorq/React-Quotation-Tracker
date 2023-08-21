@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 //Context API
 import { AuthContext } from "../context/AuthContext";
 
-const ListQuotation = () => {
+const ListQuotation = ({ layoutActive }) => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
@@ -59,7 +59,6 @@ const ListQuotation = () => {
   const [columnDefs] = useState([
     { field: "customerId.name", headerName: "Customer" },
     { field: "userId.name", headerName: "Salesperson" },
-    { field: "status" },
     {
       field: "quoteGiven",
       cellRenderer: (data) => {
@@ -69,13 +68,13 @@ const ListQuotation = () => {
     {
       field: "date",
       cellRenderer: (data) => {
-        return moment(data.value).format("YYYY-MM-DD");
+        return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
     {
       field: "followUp",
       cellRenderer: (data) => {
-        return moment(data.value).format("YYYY-MM-DD");
+        return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
     { field: "quoteDetails" },
@@ -84,7 +83,22 @@ const ListQuotation = () => {
       headerName: "Date Created",
       sort: "desc",
       cellRenderer: (data) => {
-        return moment(data.value).format("YYYY-MM-DD");
+        return moment.utc(data.value).format("YYYY-MM-DD");
+      },
+    },
+    {
+      field: "status",
+      cellStyle: (params) => {
+        if (params.value === "Pending") {
+          return { color: "white", backgroundColor: "#d4b400", textAlign: "center" };
+        }
+        if (params.value === "Finished") {
+          return { color: "white", backgroundColor: "#018024", textAlign: "center" };
+        }
+        if (params.value === "Canceled") {
+          return { color: "white", backgroundColor: "#9f1916", textAlign: "center" };
+        }
+        return null;
       },
     },
     {
@@ -94,11 +108,7 @@ const ListQuotation = () => {
       cellRenderer: (row) => {
         return (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => handleEdit(row.data._id)}
-            >
+            <Button variant="secondary" size="sm" onClick={() => handleEdit(row.data._id)}>
               <i className="bx bxs-pencil"></i>
             </Button>{" "}
             <Button variant="danger" size="sm">
@@ -129,7 +139,6 @@ const ListQuotation = () => {
 
   //Edit Function
   const handleEdit = (id) => {
-    console.log(id);
     navigate("/update_quotation/" + id);
   };
 

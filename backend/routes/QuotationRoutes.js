@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 //controller
-const { add, update, getAll } = require("../controllers/QuotationController");
+const {
+  add,
+  update,
+  getAll,
+  getQuotationById,
+} = require("../controllers/QuotationController");
 
 //Middlewares
 const validate = require("../middlewares/handleValidation");
@@ -22,5 +27,6 @@ router.put(
   validate,
   update
 );
+router.get("/:id", getQuotationById);
 
 module.exports = router;
