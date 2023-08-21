@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 //Bootstrap
 import { Card } from "react-bootstrap";
@@ -37,6 +37,9 @@ const AddQuotation = () => {
   const [quoteDetails, setQuoteDetails] = useState("");
 
   const [customerList, setCustomerList] = useState([]);
+
+  const { id } = useParams();
+  console.log(id);
 
   //Load Customers data from api
   useEffect(() => {

@@ -45,30 +45,7 @@ const Home = () => {
         <Card.Header className="cardHeader-custom" as="h5">
           Quotation Tracker
         </Card.Header>
-        <Card.Body>
-          Table here
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </Card.Body>
+        <Card.Body>Table here</Card.Body>
       </Card>
     </Layout>
   );

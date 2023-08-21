@@ -25,6 +25,8 @@ const Login = () => {
       event.preventDefault();
       const data = { email, password };
 
+      console.log(process.env.REACT_APP_API_URL);
+
       await fetch(process.env.REACT_APP_API_URL + "/api/users/login", {
         method: "POST",
         headers: {

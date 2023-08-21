@@ -67,6 +67,10 @@ function App() {
           path="/add_quotation"
           element={user ? <AddQuotation /> : <Login />}
         />
+        <Route
+          path="/update_quotation/:id"
+          element={user ? <AddQuotation /> : <Login />}
+        />
       </Routes>
     </BrowserRouter>
   );

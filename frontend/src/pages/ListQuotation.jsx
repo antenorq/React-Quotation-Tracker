@@ -9,7 +9,7 @@ import { Button } from "react-bootstrap";
 //css
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //Toastify
 import { toast } from "react-toastify";
@@ -22,6 +22,8 @@ const ListQuotation = () => {
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
   const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   //Load Customers data from api
   useEffect(() => {
@@ -95,7 +97,7 @@ const ListQuotation = () => {
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => handleEdit(row.data)}
+              onClick={() => handleEdit(row.data._id)}
             >
               <i className="bx bxs-pencil"></i>
             </Button>{" "}
@@ -126,8 +128,9 @@ const ListQuotation = () => {
   }, []);
 
   //Edit Function
-  const handleEdit = (rowData) => {
-    console.log(rowData);
+  const handleEdit = (id) => {
+    console.log(id);
+    navigate("/update_quotation/" + id);
   };
 
   return (

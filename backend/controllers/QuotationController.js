@@ -35,26 +35,37 @@ const add = async (req, res) => {
 
 //UPDATE quotation
 const update = async (req, res) => {
-  const { name, business, email, phone, address } = req.body;
+  const {
+    customerId,
+    userId,
+    status,
+    quoteGiven,
+    date,
+    followUp,
+    quoteDetails,
+  } = req.body;
+
   const { id } = req.params;
 
   try {
-    //find Customer by Id
+    //find quotation by Id
     const quotation = await Quotation.findById(id);
 
     if (quotation) {
-      if (name) quotation.name = name;
-      if (business) quotation.business = business;
-      if (email) quotation.email = email;
-      if (phone) quotation.phone = phone;
-      if (address) quotation.address = address;
+      if (customerId) quotation.customerId = customerId;
+      if (userId) quotation.userId = userId;
+      if (status) quotation.status = status;
+      if (quoteGiven) quotation.quoteGiven = quoteGiven;
+      if (date) quotation.date = date;
+      if (followUp) quotation.followUp = followUp;
+      if (quoteDetails) quotation.quoteDetails = quoteDetails;
 
       //save
       await quotation.save();
       res.status(200).json(quotation);
     } else {
       res.status(422).json({
-        errors: ["Customer not found or Something went wrong, try again later"],
+        errors: ["Quotation not found or Something went wrong."],
       });
     }
   } catch (error) {
