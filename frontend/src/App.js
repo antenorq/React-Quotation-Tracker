@@ -50,27 +50,12 @@ function App() {
       <Routes>
         <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/login" element={user ? <Home /> : <Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/list_customer"
-          element={user ? <ListCustomer /> : <Login />}
-        />
-        <Route
-          path="/list_quotation"
-          element={user ? <ListQuotation /> : <Login />}
-        />
-        <Route
-          path="/add_customer"
-          element={user ? <AddCustomer /> : <Login />}
-        />
-        <Route
-          path="/add_quotation"
-          element={user ? <FormQuotation /> : <Login />}
-        />
-        <Route
-          path="/update_quotation/:id"
-          element={user ? <FormQuotation /> : <Login />}
-        />
+        <Route path="/register" element={user ? <Register /> : <Login />} />
+        <Route path="/list_customer" element={user ? <ListCustomer /> : <Login />} />
+        <Route path="/list_quotation" element={user ? <ListQuotation /> : <Login />} />
+        <Route path="/add_customer" element={user ? <AddCustomer /> : <Login />} />
+        <Route path="/add_quotation" element={user ? <FormQuotation /> : <Login />} />
+        <Route path="/update_quotation/:id" element={user ? <FormQuotation /> : <Login />} />
       </Routes>
     </BrowserRouter>
   );

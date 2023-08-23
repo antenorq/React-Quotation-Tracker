@@ -17,15 +17,15 @@ import { toast } from "react-toastify";
 //Context API
 import { AuthContext } from "../context/AuthContext";
 
-const ListQuotation = ({ layoutActive }) => {
+const ListQuotation = ({ activeLayout }) => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
-  const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
+  const [rowData, setRowData] = useState();
 
   const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  //Load Customers data from api
+  //Load ALL Quotation data from api
   useEffect(() => {
     try {
       fetch(process.env.REACT_APP_API_URL + "/api/quotation/list", {
@@ -40,6 +40,7 @@ const ListQuotation = ({ layoutActive }) => {
             res.errors.map((error) => toast.error(error));
           } else {
             setRowData(res);
+            //gridRef.current.api.setRowData(res);
           }
         })
         .catch((err) => {
@@ -51,35 +52,39 @@ const ListQuotation = ({ layoutActive }) => {
   }, [user.token]);
 
   const onGridReady = useCallback((params) => {
-    gridRef.current.api.sizeColumnsToFit();
+    //gridRef.current.api.sizeColumnsToFit();
     //gridRef.current.columnApi.autoSizeColumns();
   }, []);
 
   // Each Column Definition results in one Column.
   const [columnDefs] = useState([
-    { field: "customerId.name", headerName: "Customer" },
-    { field: "userId.name", headerName: "Salesperson" },
+    { field: "customerId.name", headerName: "Customer", flex: 1 },
+    { field: "userId.name", headerName: "Salesperson", flex: 1 },
     {
       field: "quoteGiven",
+      flex: 1,
       cellRenderer: (data) => {
         return "$" + data.value;
       },
     },
     {
       field: "date",
+      flex: 1,
       cellRenderer: (data) => {
         return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
     {
       field: "followUp",
+      flex: 1,
       cellRenderer: (data) => {
         return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
-    { field: "quoteDetails" },
+    { field: "quoteDetails", flex: 2 },
     {
       field: "createdAt",
+      flex: 1,
       headerName: "Date Created",
       sort: "desc",
       cellRenderer: (data) => {
@@ -88,6 +93,7 @@ const ListQuotation = ({ layoutActive }) => {
     },
     {
       field: "status",
+      flex: 1,
       cellStyle: (params) => {
         if (params.value === "Pending") {
           return { color: "white", backgroundColor: "#d4b400", textAlign: "center" };
@@ -103,7 +109,7 @@ const ListQuotation = ({ layoutActive }) => {
     },
     {
       field: "Actions",
-
+      flex: 1,
       cellClass: "ag-right-aligned-cell",
       cellRenderer: (row) => {
         return (
@@ -111,7 +117,7 @@ const ListQuotation = ({ layoutActive }) => {
             <Button variant="secondary" size="sm" onClick={() => handleEdit(row.data._id)}>
               <i className="bx bxs-pencil"></i>
             </Button>{" "}
-            <Button variant="danger" size="sm">
+            <Button variant="danger" size="sm" onClick={() => handleDelete(row)}>
               <i className="bx bx-x"></i>
             </Button>
           </>
@@ -123,7 +129,7 @@ const ListQuotation = ({ layoutActive }) => {
   // Click in the cell
   const cellClickedListener = useCallback((event) => {
     if (event.colDef.field === "quoteDetails") {
-      alert("Quote Details: " + event.value);
+      alert(event.value);
     }
   }, []);
 
@@ -137,13 +143,47 @@ const ListQuotation = ({ layoutActive }) => {
     gridRef.current.api.paginationSetPageSize(Number(value));
   }, []);
 
-  //Edit Function
+  //EDIT Function
   const handleEdit = (id) => {
     navigate("/update_quotation/" + id);
   };
 
+  //DELETE Function
+  const handleDelete = async (row) => {
+    try {
+      await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + row.data._id, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + user.token,
+        },
+      })
+        .then((result) => result.json())
+        .then((res) => {
+          if (res.errors) {
+            res.errors.map((error) => toast.error(error));
+          } else {
+            toast.success("Quotation $" + res.quoteGiven + " Deleted Successufly");
+            //REMOVE THE LINE
+            row.api?.applyTransaction({ remove: [row.data] });
+
+            // const newTable = rowData.filter(function (row) {
+            //   return row._id !== id;
+            // });
+            //const newTable = rowData.filter((row) => row._id !== id);
+
+            //setRowData(newTable);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
-    <Layout>
+    <Layout activeLayout={activeLayout}>
       {/* Example using Grid's API */}
       {/* <button onClick={buttonListener}>Push Me</button> */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -163,7 +203,7 @@ const ListQuotation = ({ layoutActive }) => {
         </div>
       </div>
       <br />
-      <div className="ag-theme-alpine" style={{ width: "100%", height: "90%" }}>
+      <div className="ag-theme-alpine" style={{ width: "100%", height: activeLayout === false ? "50vh" : "75vh" }}>
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API
           rowData={rowData} // Row Data for Rows

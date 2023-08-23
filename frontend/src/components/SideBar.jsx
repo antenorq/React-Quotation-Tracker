@@ -11,7 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import "./SideBar.css";
 
 const SideBar = ({ open }) => {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const path = useLocation().pathname;
 
@@ -33,14 +33,7 @@ const SideBar = ({ open }) => {
         </li>
 
         <li>
-          <Link
-            to={"/list_customer"}
-            className={
-              path === "/list_customer" || path === "/add_customer"
-                ? "active"
-                : ""
-            }
-          >
+          <Link to={"/list_customer"} className={path === "/list_customer" || path === "/add_customer" ? "active" : ""}>
             <i className="bx bxs-user"></i>
             <span className="link_name">Customer</span>
           </Link>
@@ -48,28 +41,22 @@ const SideBar = ({ open }) => {
         </li>
 
         <li>
-          <Link
-            to={"/list_quotation"}
-            className={
-              path === "/list_quotation" || path === "/add_quotation"
-                ? "active"
-                : ""
-            }
-          >
+          <Link to={"/list_quotation"} className={path === "/list_quotation" || path === "/add_quotation" ? "active" : ""}>
             <i className="bx bxs-message-square-add"></i>
             <span className="link_name">Quotation</span>
           </Link>
           <span className="tooltip">Quotation</span>
         </li>
 
-        <li>
-          <Link to={"/login"} className={path === "/login" ? "active" : ""}>
-            <i className="bx bxs-user-detail"></i>
-            <span className="link_name">Admin Users</span>
-          </Link>
-          <span className="tooltip">Admin Users</span>
-        </li>
-
+        {user.type === 1 && (
+          <li>
+            <Link to={"/register"} className={path === "/register" ? "active" : ""}>
+              <i className="bx bxs-user-detail"></i>
+              <span className="link_name">Admin Users</span>
+            </Link>
+            <span className="tooltip">Admin Users</span>
+          </li>
+        )}
         <li className="logout" onClick={logout}>
           <div className="profile_details">
             <div className="profile_content">

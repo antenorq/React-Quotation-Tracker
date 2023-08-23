@@ -71,7 +71,7 @@ const ListCustomer = () => {
 
   // Example of consuming Grid Event
   const cellClickedListener = useCallback((event) => {
-    alert("clicked on: " + event.value);
+    //alert("clicked on: " + event.value);
   }, []);
 
   // Example using Grid's API

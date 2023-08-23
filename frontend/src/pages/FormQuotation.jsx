@@ -218,7 +218,7 @@ const AddQuotation = () => {
               {/*SALESPERSON*/}
               <Form.Group as={Col} md="2">
                 <Form.Label>Salesperson</Form.Label>
-                <Form.Control readOnly disabled type="text" value={userName} onChange={(e) => setFollowUp(e.target.value)} />
+                <Form.Control readOnly disabled type="text" value={user.type === 1 ? userName : user.name} onChange={(e) => setUserName(e.target.value)} />
               </Form.Group>
             </Row>
 
