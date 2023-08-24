@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import "./Register.css";
-import loginImg from "../assets/img/login-img.png";
-import logo from "../assets/img/logo.png";
+// import loginImg from "../assets/img/login-img.png";
+// import logo from "../assets/img/logo.png";
 
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
@@ -73,11 +73,25 @@ const Register = () => {
                   <form>
                     <div className="form-group">
                       <label>Username</label>
-                      <input type="text" className="form-control" name="name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        placeholder="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
                     </div>
                     <div className="form-group">
                       <label>Email</label>
-                      <input type="text" className="form-control" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
                     </div>
                     <div className="form-group">
                       <label>Password</label>
@@ -103,7 +117,12 @@ const Register = () => {
                     </div>
                     <div className="form-group">
                       <label>User Type</label>
-                      <select name="type" className="form-control" value={type} onChange={(e) => setType(e.target.value)}>
+                      <select
+                        name="type"
+                        className="form-control"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                      >
                         <option value="1">Admin</option>
                         <option value="2">Salesperson</option>
                       </select>

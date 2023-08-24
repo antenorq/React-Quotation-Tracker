@@ -11,6 +11,11 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 
 const Home = () => {
+  //const [rowData, setRowData] = useState(null);
+  const [qtdPending, setQtdPending] = useState(0);
+  const [qtdFinished, setQtdFinished] = useState(0);
+  const [qtdCanceled, setQtdCanceled] = useState(0);
+
   const { user } = useContext(AuthContext);
 
   //Load ALL Quotation data from api
@@ -28,6 +33,25 @@ const Home = () => {
             res.errors.map((error) => toast.error(error));
           } else {
             //setRowData(res);
+            //let total = 0;
+            let qtd = 0;
+            let qtd2 = 0;
+            let qtd3 = 0;
+            res.map((res) => {
+              if (res.status === "Pending") {
+                qtd = qtd + 1;
+              }
+              if (res.status === "Finished") {
+                qtd2 = qtd2 + 1;
+              }
+              if (res.status === "Canceled") {
+                qtd3 = qtd3 + 1;
+              }
+              return qtd;
+            });
+            setQtdPending(qtd);
+            setQtdFinished(qtd2);
+            setQtdCanceled(qtd3);
           }
         })
         .catch((err) => {
@@ -38,6 +62,25 @@ const Home = () => {
     }
   }, [user.token]);
 
+  // const getQtdStatus = () => {
+  //   const dados = rowData.map((row) => {
+  //     if (row.status === "Pending") {
+  //       //setQtdPending(qtdPending++);
+  //       console.log("aqui");
+  //     }
+  //     return 1;
+  //   });
+  //   console.log("qtdPending:" + qtdPending, dados);
+  //   return qtdPending;
+  // };
+
+  // const getRowData = () => {
+  //   console.log("popo", rowData);
+  //   return rowData[1].status;
+  // };
+
+  // getQtdStatus();
+  console.log(qtdPending);
   return (
     <Layout>
       <Row>
@@ -45,7 +88,7 @@ const Home = () => {
           <Card className="card-custom">
             <Card.Body>
               <div className="title-content">Finished</div>
-              <span className="info-content">250</span>
+              <span className="info-content">{qtdFinished}</span>
             </Card.Body>
           </Card>
         </Col>
@@ -53,7 +96,7 @@ const Home = () => {
           <Card className="card-custom">
             <Card.Body>
               <div className="title-content">Pending</div>
-              <span className="info-content">41</span>
+              <span className="info-content">{qtdPending}</span>
             </Card.Body>
           </Card>
         </Col>
@@ -61,7 +104,7 @@ const Home = () => {
           <Card className="card-custom">
             <Card.Body>
               <div className="title-content">Canceled</div>
-              <span className="info-content">350</span>
+              <span className="info-content">{qtdCanceled}</span>
             </Card.Body>
           </Card>
         </Col>
