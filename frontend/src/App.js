@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ListCustomer from "./pages/ListCustomer";
+import ListUser from "./pages/ListUser";
 import AddCustomer from "./pages/AddCustomer";
 import ListQuotation from "./pages/ListQuotation";
 import FormQuotation from "./pages/FormQuotation";
@@ -50,7 +51,9 @@ function App() {
       <Routes>
         <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/login" element={user ? <Home /> : <Login />} />
+
         <Route path="/register" element={user ? <Register /> : <Login />} />
+        <Route path="/list_user" element={user ? <ListUser /> : <Login />} />
         <Route path="/list_customer" element={user ? <ListCustomer /> : <Login />} />
         <Route path="/list_quotation" element={user ? <ListQuotation /> : <Login />} />
         <Route path="/add_customer" element={user ? <AddCustomer /> : <Login />} />

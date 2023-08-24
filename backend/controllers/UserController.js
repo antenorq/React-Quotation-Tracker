@@ -130,10 +130,28 @@ const getUserById = async (req, res) => {
   }
 };
 
+//GET ALL USERS
+const getAll = async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: "desc" });
+
+    //check if users exists
+    if (users) {
+      res.status(200).json(users);
+    } else {
+      res.status(422).json({ errors: ["User list empty or something went wrong"] });
+      return;
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};
+
 module.exports = {
   register,
   login,
   getCurrentUser,
   update,
   getUserById,
+  getAll,
 };

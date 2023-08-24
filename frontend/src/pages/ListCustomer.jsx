@@ -54,17 +54,35 @@ const ListCustomer = () => {
 
   // Each Column Definition results in one Column.
   const [columnDefs] = useState([
-    { field: "name" },
-    { field: "business" },
-    { field: "email" },
-    { field: "phone" },
-    { field: "address" },
+    { field: "name", flex: 1 },
+    { field: "business", flex: 1 },
+    { field: "email", flex: 2 },
+    { field: "phone", flex: 1 },
+    { field: "address", flex: 2 },
     {
       field: "createdAt",
+      flex: 1,
       headerName: "Date Created",
       sort: "desc",
       cellRenderer: (data) => {
         return moment(data.value).format("YYYY-MM-DD");
+      },
+    },
+    {
+      field: "Actions",
+      flex: 1,
+      cellClass: "ag-right-aligned-cell",
+      cellRenderer: (row) => {
+        return (
+          <>
+            <Button variant="secondary" size="sm" onClick={() => handleEdit(row.data._id)}>
+              <i className="bx bxs-pencil"></i>
+            </Button>{" "}
+            <Button variant="danger" size="sm" onClick={() => handleDelete(row)}>
+              <i className="bx bx-x"></i>
+            </Button>
+          </>
+        );
       },
     },
   ]);
@@ -83,6 +101,43 @@ const ListCustomer = () => {
     var value = document.getElementById("page-size").value;
     gridRef.current.api.paginationSetPageSize(Number(value));
   }, []);
+
+  //EDIT Function
+  const handleEdit = (id) => {
+    //navigate("/update_quotation/" + id);
+  };
+
+  //DELETE Function
+  const handleDelete = async (row) => {
+    // try {
+    //   await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + row.data._id, {
+    //     method: "DELETE",
+    //     headers: {
+    //       Authorization: "Bearer " + user.token,
+    //     },
+    //   })
+    //     .then((result) => result.json())
+    //     .then((res) => {
+    //       if (res.errors) {
+    //         res.errors.map((error) => toast.error(error));
+    //       } else {
+    //         toast.success("Quotation $" + res.quoteGiven + " Deleted Successufly");
+    //         //REMOVE THE LINE
+    //         row.api?.applyTransaction({ remove: [row.data] });
+    //         // const newTable = rowData.filter(function (row) {
+    //         //   return row._id !== id;
+    //         // });
+    //         //const newTable = rowData.filter((row) => row._id !== id);
+    //         //setRowData(newTable);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       toast.error(err.message);
+    //     });
+    // } catch (error) {
+    //   toast.error(error.message);
+    // }
+  };
 
   return (
     <Layout>

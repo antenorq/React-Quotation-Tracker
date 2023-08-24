@@ -62,30 +62,12 @@ const Home = () => {
     }
   }, [user.token]);
 
-  // const getQtdStatus = () => {
-  //   const dados = rowData.map((row) => {
-  //     if (row.status === "Pending") {
-  //       //setQtdPending(qtdPending++);
-  //       console.log("aqui");
-  //     }
-  //     return 1;
-  //   });
-  //   console.log("qtdPending:" + qtdPending, dados);
-  //   return qtdPending;
-  // };
-
-  // const getRowData = () => {
-  //   console.log("popo", rowData);
-  //   return rowData[1].status;
-  // };
-
-  // getQtdStatus();
   console.log(qtdPending);
   return (
     <Layout>
       <Row>
         <Col className="mb-4" sm={12} md={6} lg={3}>
-          <Card className="card-custom">
+          <Card className="card-custom finished">
             <Card.Body>
               <div className="title-content">Finished</div>
               <span className="info-content">{qtdFinished}</span>
@@ -93,7 +75,7 @@ const Home = () => {
           </Card>
         </Col>
         <Col className="mb-4 " sm={12} md={6} lg={3}>
-          <Card className="card-custom">
+          <Card className="card-custom pending">
             <Card.Body>
               <div className="title-content">Pending</div>
               <span className="info-content">{qtdPending}</span>
@@ -101,7 +83,7 @@ const Home = () => {
           </Card>
         </Col>
         <Col className="mb-4" sm={12} md={6} lg={3}>
-          <Card className="card-custom">
+          <Card className="card-custom canceled">
             <Card.Body>
               <div className="title-content">Canceled</div>
               <span className="info-content">{qtdCanceled}</span>
@@ -112,7 +94,7 @@ const Home = () => {
           <Card className="card-custom">
             <Card.Body>
               <div className="title-content">Another Status</div>
-              <span className="info-content">02</span>
+              <span className="info-content">&nbsp;</span>
             </Card.Body>
           </Card>
         </Col>

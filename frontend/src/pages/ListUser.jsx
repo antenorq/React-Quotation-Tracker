@@ -9,7 +9,7 @@ import { Button } from "react-bootstrap";
 //css
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //Toastify
 import { toast } from "react-toastify";
@@ -17,34 +17,30 @@ import { toast } from "react-toastify";
 //Context API
 import { AuthContext } from "../context/AuthContext";
 
-const ListQuotation = ({ activeLayout }) => {
+const ListUser = () => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
-  const [rowData, setRowData] = useState();
+  const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
   const { user } = useContext(AuthContext);
 
-  const navigate = useNavigate();
-
-  //Load ALL Quotation data from api
+  //Load Customers data from api
   useEffect(() => {
     try {
-      fetch(process.env.REACT_APP_API_URL + "/api/quotation/list", {
+      fetch(process.env.REACT_APP_API_URL + "/api/users/list", {
         headers: {
           Authorization: "Bearer " + user.token,
         },
       })
         .then((result) => result.json())
         .then((res) => {
-          console.log(res);
           if (res.errors) {
             res.errors.map((error) => toast.error(error));
           } else {
             setRowData(res);
-            //gridRef.current.api.setRowData(res);
           }
         })
         .catch((err) => {
-          toast.error(err);
+          toast.error(err.message);
         });
     } catch (error) {
       toast.error(error.message);
@@ -52,60 +48,27 @@ const ListQuotation = ({ activeLayout }) => {
   }, [user.token]);
 
   const onGridReady = useCallback((params) => {
-    //gridRef.current.api.sizeColumnsToFit();
+    gridRef.current.api.sizeColumnsToFit();
     //gridRef.current.columnApi.autoSizeColumns();
   }, []);
 
   // Each Column Definition results in one Column.
   const [columnDefs] = useState([
-    { field: "customerId.name", headerName: "Customer", flex: 1 },
-    { field: "userId.name", headerName: "Salesperson", flex: 1 },
+    { field: "name", flex: 1 },
+    { field: "email", flex: 2 },
     {
-      field: "quoteGiven",
+      field: "type",
       flex: 1,
-      cellRenderer: (data) => {
-        return "$" + data.value;
+      cellRenderer: (type) => {
+        return type.value === 1 ? "Admin" : "Salesperson";
       },
     },
-    {
-      field: "date",
-      headerName: "Date Sent",
-      flex: 1,
-      cellRenderer: (data) => {
-        return moment.utc(data.value).format("YYYY-MM-DD");
-      },
-    },
-    {
-      field: "followUp",
-      flex: 1,
-      cellRenderer: (data) => {
-        return moment.utc(data.value).format("YYYY-MM-DD");
-      },
-    },
-    { field: "quoteDetails", flex: 2, headerName: "Quote Note" },
     {
       field: "createdAt",
-      flex: 1,
       headerName: "Date Created",
       sort: "desc",
       cellRenderer: (data) => {
-        return moment.utc(data.value).format("YYYY-MM-DD");
-      },
-    },
-    {
-      field: "status",
-      flex: 1,
-      cellStyle: (params) => {
-        if (params.value === "Pending") {
-          return { color: "white", backgroundColor: "#d4b400", textAlign: "center" };
-        }
-        if (params.value === "Finished") {
-          return { color: "white", backgroundColor: "#018024", textAlign: "center" };
-        }
-        if (params.value === "Canceled") {
-          return { color: "white", backgroundColor: "#9f1916", textAlign: "center" };
-        }
-        return null;
+        return moment(data.value).format("YYYY-MM-DD");
       },
     },
     {
@@ -127,11 +90,9 @@ const ListQuotation = ({ activeLayout }) => {
     },
   ]);
 
-  // Click in the cell
+  // Example of consuming Grid Event
   const cellClickedListener = useCallback((event) => {
-    if (event.colDef.field === "quoteDetails") {
-      alert(event.value);
-    }
+    //alert("clicked on: " + event.value);
   }, []);
 
   // Example using Grid's API
@@ -146,51 +107,49 @@ const ListQuotation = ({ activeLayout }) => {
 
   //EDIT Function
   const handleEdit = (id) => {
-    navigate("/update_quotation/" + id);
+    //navigate("/update_quotation/" + id);
   };
 
   //DELETE Function
   const handleDelete = async (row) => {
-    try {
-      await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + row.data._id, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + user.token,
-        },
-      })
-        .then((result) => result.json())
-        .then((res) => {
-          if (res.errors) {
-            res.errors.map((error) => toast.error(error));
-          } else {
-            toast.success("Quotation $" + res.quoteGiven + " Deleted Successufly");
-            //REMOVE THE LINE
-            row.api?.applyTransaction({ remove: [row.data] });
-
-            // const newTable = rowData.filter(function (row) {
-            //   return row._id !== id;
-            // });
-            //const newTable = rowData.filter((row) => row._id !== id);
-
-            //setRowData(newTable);
-          }
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    } catch (error) {
-      toast.error(error.message);
-    }
+    // try {
+    //   await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + row.data._id, {
+    //     method: "DELETE",
+    //     headers: {
+    //       Authorization: "Bearer " + user.token,
+    //     },
+    //   })
+    //     .then((result) => result.json())
+    //     .then((res) => {
+    //       if (res.errors) {
+    //         res.errors.map((error) => toast.error(error));
+    //       } else {
+    //         toast.success("Quotation $" + res.quoteGiven + " Deleted Successufly");
+    //         //REMOVE THE LINE
+    //         row.api?.applyTransaction({ remove: [row.data] });
+    //         // const newTable = rowData.filter(function (row) {
+    //         //   return row._id !== id;
+    //         // });
+    //         //const newTable = rowData.filter((row) => row._id !== id);
+    //         //setRowData(newTable);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       toast.error(err.message);
+    //     });
+    // } catch (error) {
+    //   toast.error(error.message);
+    // }
   };
 
   return (
-    <Layout activeLayout={activeLayout}>
+    <Layout>
       {/* Example using Grid's API */}
       {/* <button onClick={buttonListener}>Push Me</button> */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
-          <Link to={"/add_quotation"}>
-            <Button>Add Quotation</Button>
+          <Link to={"/register"}>
+            <Button>Register User</Button>
           </Link>
         </div>
         <div>
@@ -204,7 +163,7 @@ const ListQuotation = ({ activeLayout }) => {
         </div>
       </div>
       <br />
-      <div className="ag-theme-alpine" style={{ width: "100%", height: activeLayout === false ? "50vh" : "75vh" }}>
+      <div className="ag-theme-alpine" style={{ width: "100%", height: "100%" }}>
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API
           rowData={rowData} // Row Data for Rows
@@ -216,11 +175,11 @@ const ListQuotation = ({ activeLayout }) => {
           onGridReady={onGridReady}
           suppressMenuHide={true}
           pagination={true}
-          paginationPageSize={14}
+          paginationPageSize={15}
         />
       </div>
     </Layout>
   );
 };
 
-export default ListQuotation;
+export default ListUser;

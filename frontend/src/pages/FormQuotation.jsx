@@ -225,7 +225,7 @@ const AddQuotation = () => {
             <Row className="mb-3">
               {/*QUOTE DETAIL*/}
               <Form.Group as={Col} md="6">
-                <Form.Label>Quote Details</Form.Label>
+                <Form.Label>Quote Note</Form.Label>
                 <Form.Control as="textarea" rows={3} required value={quoteDetails} onChange={(e) => setQuoteDetails(e.target.value)} />
                 <Form.Control.Feedback type="invalid">Quote Details Required</Form.Control.Feedback>
               </Form.Group>

@@ -50,10 +50,10 @@ const Login = () => {
           }
         })
         .catch((err) => {
-          toast.error(err);
+          toast.error(err.message);
         });
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -63,11 +63,16 @@ const Login = () => {
         <div className="container-fluid">
           <div className="row justify-content-center align-items-center">
             <div className="col-md-6 col-12 login_left_img">
-              <img src={loginImg} alt="" />
+              <img src={loginImg} alt="" className="img-fluid" />
             </div>
             <div className="col-md-6 col-12 form_fields">
               <div className="form_logo">
-                <img src={logo} alt="" />
+                {/* <img src={logo} alt="" />
+                <br />
+                <br /> */}
+                LOGIN
+                <br />
+                <br />
               </div>
               <div className="form_inner">
                 <form>

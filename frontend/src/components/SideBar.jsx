@@ -50,7 +50,7 @@ const SideBar = ({ open }) => {
 
         {user.type === 1 && (
           <li>
-            <Link to={"/register"} className={path === "/register" ? "active" : ""}>
+            <Link to={"/list_user"} className={path === "/list_user" ? "active" : ""}>
               <i className="bx bxs-user-detail"></i>
               <span className="link_name">Admin Users</span>
             </Link>

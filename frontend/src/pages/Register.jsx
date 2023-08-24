@@ -41,7 +41,7 @@ const Register = () => {
             setPassword("");
             setConfirmPassword("");
             console.log(res);
-            navigate("/login");
+            navigate("/list_user");
           }
           if (res.errors) {
             res.errors.map((error) => toast.error(error));
@@ -73,25 +73,11 @@ const Register = () => {
                   <form>
                     <div className="form-group">
                       <label>Username</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="name"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
+                      <input type="text" className="form-control" name="name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className="form-group">
                       <label>Email</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
+                      <input type="text" className="form-control" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="form-group">
                       <label>Password</label>
@@ -116,13 +102,8 @@ const Register = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label>User Type</label>
-                      <select
-                        name="type"
-                        className="form-control"
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                      >
+                      <label>User Access Type</label>
+                      <select name="type" className="form-control" value={type} onChange={(e) => setType(e.target.value)}>
                         <option value="1">Admin</option>
                         <option value="2">Salesperson</option>
                       </select>

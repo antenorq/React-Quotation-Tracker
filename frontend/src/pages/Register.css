@@ -24,7 +24,7 @@
 .form_module {
   background: #fff;
 }
-
+/* 
 .login_left_img {
   position: relative;
   height: 100vh;
@@ -37,7 +37,7 @@
   width: 100%;
   object-fit: cover;
   height: 100%;
-}
+} */
 
 .form_logo {
   text-align: center;
