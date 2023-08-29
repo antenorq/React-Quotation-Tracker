@@ -15,6 +15,6 @@ router.post("/login", loginValidation(), validate, login);
 router.get("/profile", authGuard, getCurrentUser);
 router.put("/update", authGuard, userUpdateValidation(), validate, update);
 router.get("/list", authGuard, getAll);
-router.get("/update/:id", getUserById);
+router.get("/:id", getUserById);
 
 module.exports = router;
