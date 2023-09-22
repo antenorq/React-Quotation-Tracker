@@ -13,7 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Solve Cors
-app.use(cors({ credentials: true, origin: "http://192.168.10.71:3000" }));
+//app.use(cors({ credentials: true, origin: "http://192.168.10.71:3000" }));
+app.use(cors({ credentials: true, origin: "https://react-quotation-tracker.vercel.app" }));
 
 //DB connection
 require("./config/db.js");
