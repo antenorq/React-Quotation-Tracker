@@ -44,7 +44,7 @@ const ListQuotation = ({ activeLayout }) => {
           }
         })
         .catch((err) => {
-          toast.error(err);
+          toast.error(err.message);
         });
     } catch (error) {
       toast.error(error.message);

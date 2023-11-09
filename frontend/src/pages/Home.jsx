@@ -16,7 +16,7 @@ const Home = () => {
   const [qtdFinished, setQtdFinished] = useState(0);
   const [qtdCanceled, setQtdCanceled] = useState(0);
 
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   //Load ALL Quotation data from api
   useEffect(() => {
@@ -55,12 +55,13 @@ const Home = () => {
           }
         })
         .catch((err) => {
-          toast.error(err);
+          toast.error(err.message);
+          logout();
         });
     } catch (error) {
       toast.error(error.message);
     }
-  }, [user.token]);
+  }, [user.token, logout]);
 
   console.log(qtdPending);
   return (
@@ -93,7 +94,7 @@ const Home = () => {
         <Col className="mb-4" sm={12} md={6} lg={3}>
           <Card className="card-custom">
             <Card.Body>
-              <div className="title-content">Another Status</div>
+              <div className="title-content">Another Status...</div>
               <span className="info-content">&nbsp;</span>
             </Card.Body>
           </Card>

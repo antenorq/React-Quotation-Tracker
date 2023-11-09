@@ -25,7 +25,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, logout } = useContext(AuthContext);
 
   useEffect(() => {
     // Check if user and token are stored in localStorage
