@@ -63,7 +63,6 @@ const Home = () => {
     }
   }, [user.token, logout]);
 
-  console.log(qtdPending);
   return (
     <Layout>
       <Row>

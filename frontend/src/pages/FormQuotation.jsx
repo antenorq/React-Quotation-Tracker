@@ -36,8 +36,11 @@ const AddQuotation = () => {
   const [date, setDate] = useState("");
   const [followUp, setFollowUp] = useState("");
   const [quoteDetails, setQuoteDetails] = useState("");
+  const [file, setFile] = useState("");
 
   const [customerList, setCustomerList] = useState([]);
+
+  console.log(file);
 
   //ID PARAM FROM LIST QUOTATION EDIT BUTTOM
   const { id } = useParams();
@@ -138,24 +141,45 @@ const AddQuotation = () => {
 
       //CREATE QUOTATION
       else {
-        await fetch(process.env.REACT_APP_API_URL + "/api/quotation/add", {
+        const result = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/add", {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + user.token },
           body: JSON.stringify(formData),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            if (res._id) {
-              toast.success("Quotation Add Successfully");
-              navigate("/list_quotation");
-            }
-            if (res.errors) {
-              res.errors.map((error) => toast.error(error));
-            }
-          })
-          .catch((err) => {
-            toast.error(err);
-          });
+        });
+
+        const res = await result.json();
+        console.log(res);
+
+        //CREATE SUCCESS
+        if (res._id) {
+          console.log("AQUI3");
+          const quotation_id = res._id;
+          toast.success("Quotation Add Successfully");
+
+          ////////////UPLOAD FILE
+          try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("quotation_id", quotation_id);
+
+            const result = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            const res = await result.json();
+
+            console.log(res);
+          } catch (error) {
+            console.error("Error uploading file:", error);
+          }
+          ////////////END UPLOAD FILE
+
+          navigate("/list_quotation");
+        }
+        if (res.errors) {
+          res.errors.map((error) => toast.error(error));
+        }
       }
     } catch (error) {
       toast.error(error);
@@ -242,6 +266,15 @@ const AddQuotation = () => {
                 <Form.Label>Follow Up</Form.Label>
                 <Form.Control required type="date" value={followUp} onChange={(e) => setFollowUp(e.target.value)} />
                 <Form.Control.Feedback type="invalid">Follow Up Required</Form.Control.Feedback>
+              </Form.Group>
+            </Row>
+
+            <Row className="mb-5">
+              {/*QUOTATION PDF*/}
+              <Form.Group as={Col} md="6">
+                <Form.Label>Quotation File</Form.Label>
+                <Form.Control required name="file" type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
+                <Form.Control.Feedback type="invalid">Quotation File Required</Form.Control.Feedback>
               </Form.Group>
             </Row>
 

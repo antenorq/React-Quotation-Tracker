@@ -12,6 +12,7 @@ const quotationSchema = new Schema(
     date: Date,
     followUp: Date,
     quoteDetails: String,
+    file: String,
   },
   { timestamps: true }
 );

@@ -1,5 +1,40 @@
 const Quotation = require("../models/Quotation");
 
+const multer = require("multer");
+const path = require("path");
+
+// UPLOAD ADDFILE
+const addfile = async (req, res) => {
+  let fetch_file = null;
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join("uploads"));
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + "_" + file.originalname);
+    },
+  });
+
+  const upload = multer({ storage });
+
+  upload.single("file")(req, {}, function (err) {
+    if (err) throw err;
+    fetch_file = req.file;
+    res.json({ file: req.file, message: "File uploaded successfully!" });
+  });
+
+  //UPDATE QUOTATION WITH THE FILENAME
+  if (fetch_file) {
+    const quotation = await Quotation.findById(req.quotation_id);
+    quotation.file = fetch_file;
+
+    //save
+    await quotation.save();
+    res.status(200).json(quotation);
+  }
+};
+
 // ADD QUOTATION
 const add = async (req, res) => {
   const { customerId, userId, status, quoteGiven, date, followUp, quoteDetails } = req.body;
@@ -151,6 +186,7 @@ const getAll = async (req, res) => {
 
 module.exports = {
   add,
+  addfile,
   update,
   getAll,
   getQuotationById,

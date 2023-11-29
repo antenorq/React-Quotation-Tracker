@@ -35,7 +35,6 @@ const ListQuotation = ({ activeLayout }) => {
       })
         .then((result) => result.json())
         .then((res) => {
-          console.log(res);
           if (res.errors) {
             res.errors.map((error) => toast.error(error));
           } else {
