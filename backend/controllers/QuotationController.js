@@ -18,7 +18,10 @@ const addfile = async (req, res) => {
   console.log("aqui1");
 
   upload.single("file")(req, {}, async function (err) {
-    if (err) throw err;
+    if (err) {
+      res.status(400).json({ errors: ["ERROR TO SAVE FILE"] });
+      return;
+    }
 
     const { quotation_id } = req.body;
 
