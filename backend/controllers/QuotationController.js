@@ -5,8 +5,6 @@ const path = require("path");
 
 // UPLOAD ADDFILE
 const addfile = async (req, res) => {
-  let fetch_file = null;
-
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, path.join("uploads"));
@@ -17,22 +15,35 @@ const addfile = async (req, res) => {
   });
 
   const upload = multer({ storage });
+  console.log("aqui1");
 
-  upload.single("file")(req, {}, function (err) {
-    if (err) throw err;
-    fetch_file = req.file;
-    res.json({ file: req.file, message: "File uploaded successfully!" });
+  upload.single("file")(req, {}, async function (err) {
+    if (err) {
+      res.status(400).json({ errors: ["ERROR TO SAVE FILE"] });
+      return;
+    }
+
+    const { quotation_id } = req.body;
+
+    //UPDATE QUOTATION WITH THE FILENAME
+    if (req.file && quotation_id) {
+      console.log("aqui3");
+      const quotation = await Quotation.findById(quotation_id);
+
+      if (quotation) {
+        if (req.file.filename) quotation.file = req.file.filename;
+        //save
+        await quotation.save();
+        res.status(200).json({ file: req.file.filename, ok: "File (" + req.file.filename + ") uploaded successfully!" });
+      } else {
+        res.status(400).json({ errors: ["ADD FILE - QUOTATION NOT FOUND"] });
+        return;
+      }
+    } else {
+      res.status(400).json({ errors: ["ADD FILE: Something went wrong, try again later"] });
+      return;
+    }
   });
-
-  //UPDATE QUOTATION WITH THE FILENAME
-  if (fetch_file) {
-    const quotation = await Quotation.findById(req.quotation_id);
-    quotation.file = fetch_file;
-
-    //save
-    await quotation.save();
-    res.status(200).json(quotation);
-  }
 };
 
 // ADD QUOTATION
@@ -51,7 +62,7 @@ const add = async (req, res) => {
 
   // If Something went wrong return error
   if (!newQuotation) {
-    res.status(400).json({ errors: ["Something went wrong, try again later"] });
+    res.status(400).json({ errors: ["ADD QUOTATION: Something went wrong, try again later"] });
     return;
   }
 

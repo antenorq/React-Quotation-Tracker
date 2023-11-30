@@ -125,7 +125,6 @@ const AddQuotation = () => {
         })
           .then((res) => res.json())
           .then((res) => {
-            console.log("respostaaa: " + res);
             if (res._id) {
               toast.success("Quotation Updated Successfully");
               navigate("/list_quotation");
@@ -141,44 +140,52 @@ const AddQuotation = () => {
 
       //CREATE QUOTATION
       else {
-        const result = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/add", {
+        const result1 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/add", {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + user.token },
           body: JSON.stringify(formData),
         });
 
-        const res = await result.json();
-        console.log(res);
+        const res1 = await result1.json();
+        console.log("quotation/add", res1);
 
         //CREATE SUCCESS
-        if (res._id) {
+        if (res1._id) {
+          toast.success("Quotation ADD Successfully");
           console.log("AQUI3");
-          const quotation_id = res._id;
-          toast.success("Quotation Add Successfully");
+
+          const quotation_id = res1._id;
 
           ////////////UPLOAD FILE
-          try {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("quotation_id", quotation_id);
 
-            const result = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/upload", {
-              method: "POST",
-              body: formData,
-            });
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("quotation_id", quotation_id);
 
-            const res = await result.json();
+          console.log("AQUI3.5");
 
-            console.log(res);
-          } catch (error) {
-            console.error("Error uploading file:", error);
+          const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const res2 = await result2.json();
+          console.log("RES DO /api/quotation/upload", res2);
+          if (res2.ok) {
+            toast.success("FILE ADD Successfully");
           }
+          if (res2.errors) {
+            res2.errors.map((error) => toast.error(error));
+          }
+
+          console.log("AQUI4");
+
           ////////////END UPLOAD FILE
 
           navigate("/list_quotation");
         }
-        if (res.errors) {
-          res.errors.map((error) => toast.error(error));
+        if (res1.errors) {
+          res1.errors.map((error) => toast.error(error));
         }
       }
     } catch (error) {
