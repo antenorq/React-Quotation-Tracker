@@ -1,13 +1,12 @@
 const Quotation = require("../models/Quotation");
 
 const multer = require("multer");
-const path = require("path");
 
 // UPLOAD ADDFILE
 const addfile = async (req, res) => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.join("uploads"));
+      cb(null, "uploads");
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + "_" + file.originalname);
@@ -17,10 +16,10 @@ const addfile = async (req, res) => {
   const upload = multer({ storage });
   console.log("aqui1");
 
+  //UPLOAD.single = Multer Function that upload the file
   upload.single("file")(req, {}, async function (err) {
-    if (err) {
-      res.status(400).json({ errors: ["ERROR TO SAVE FILE"] });
-      return;
+    if (!req.file) {
+      return res.status(400).json({ errors: ["NO FILE UPLOADED"] });
     }
 
     const { quotation_id } = req.body;

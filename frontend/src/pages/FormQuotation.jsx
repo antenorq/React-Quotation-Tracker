@@ -23,6 +23,10 @@ import { AuthContext } from "../context/AuthContext";
 
 import { NumericFormat } from "react-number-format";
 
+//firebase
+import { storage } from "../config/firebaseConfig";
+import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+
 const AddQuotation = () => {
   const { user } = useContext(AuthContext);
 
@@ -156,29 +160,38 @@ const AddQuotation = () => {
 
           const quotation_id = res1._id;
 
-          ////////////UPLOAD FILE
+          // FIREBASE STORAGE UPLOAD FILE
+          const fileRef = ref(storage, `files/` + file.name);
+          const upload_result = uploadBytes(fileRef, file);
 
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("quotation_id", quotation_id);
-
-          console.log("AQUI3.5");
-
-          const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/upload", {
-            method: "POST",
-            body: formData,
-          });
-
-          const res2 = await result2.json();
-          console.log("RES DO /api/quotation/upload", res2);
-          if (res2.ok) {
+          console.log(upload_result);
+          if (upload_result) {
             toast.success("FILE ADD Successfully");
           }
-          if (res2.errors) {
-            res2.errors.map((error) => toast.error(error));
-          }
 
-          console.log("AQUI4");
+          ////////////UPLOAD FILE REST API
+
+          // const formData = new FormData();
+          // formData.append("file", file);
+          // formData.append("quotation_id", quotation_id);
+
+          // console.log("AQUI3.5");
+
+          // const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/upload", {
+          //   method: "POST",
+          //   body: formData,
+          // });
+
+          // const res2 = await result2.json();
+          // console.log("RES DO /api/quotation/upload", res2);
+          // if (res2.ok) {
+          //   toast.success("FILE ADD Successfully");
+          // }
+          // if (res2.errors) {
+          //   res2.errors.map((error) => toast.error(error));
+          // }
+
+          // console.log("AQUI4");
 
           ////////////END UPLOAD FILE
 
