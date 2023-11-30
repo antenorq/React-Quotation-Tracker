@@ -19,7 +19,7 @@ const addfile = async (req, res) => {
 
   upload.single("file")(req, {}, async function (err) {
     if (err) {
-      res.status(400).json({ errors: [err] });
+      res.status(400).json({ errors: err });
       return;
     }
 
