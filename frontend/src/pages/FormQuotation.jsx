@@ -180,7 +180,7 @@ const AddQuotation = () => {
               const res2 = await result2.json();
 
               if (res2.ok) {
-                toast.success("FILE LIKED Successfully");
+                toast.success("FILE LIKED Successfully ");
               }
               if (res2.errors) {
                 res2.errors.map((error) => toast.error(error));
