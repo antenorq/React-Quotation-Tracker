@@ -162,11 +162,29 @@ const AddQuotation = () => {
 
           // FIREBASE STORAGE UPLOAD FILE
           const fileRef = ref(storage, `files/` + file.name);
-          const upload_result = uploadBytes(fileRef, file);
+          const fileUploaded = await uploadBytes(fileRef, file);
 
-          console.log(upload_result);
-          if (upload_result) {
+          if (fileUploaded.metadata.fullPath) {
             toast.success("FILE ADD Successfully");
+          }
+
+          const associatefile = { quotation_id, fileUploaded };
+          console.log(associatefile);
+
+          const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(associatefile),
+          });
+
+          const res2 = await result2.json();
+          console.log("RES DO associatefile");
+          console.log(res2);
+          if (res2) {
+            toast.success("FILE ASSOCIATED Successfully");
+          }
+          if (res2.errors) {
+            res2.errors.map((error) => toast.error(error));
           }
 
           ////////////UPLOAD FILE REST API
@@ -195,7 +213,7 @@ const AddQuotation = () => {
 
           ////////////END UPLOAD FILE
 
-          navigate("/list_quotation");
+          //navigate("/list_quotation");
         }
         if (res1.errors) {
           res1.errors.map((error) => toast.error(error));
