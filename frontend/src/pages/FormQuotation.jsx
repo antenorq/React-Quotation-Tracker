@@ -23,9 +23,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import { NumericFormat } from "react-number-format";
 
-//firebase
-import { storage } from "../config/firebaseConfig";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import FirebaseUploadFile from "../funcions/FirebaseUploadFile";
 
 const AddQuotation = () => {
   const { user } = useContext(AuthContext);
@@ -149,7 +147,6 @@ const AddQuotation = () => {
         });
 
         const res1 = await result1.json();
-        console.log("quotation/add", res1);
 
         //created successfully
         if (res1._id) {
@@ -159,28 +156,25 @@ const AddQuotation = () => {
 
           // FIREBASE STORAGE UPLOAD FILE
           if (file !== null) {
-            const fileRef = ref(storage, `files/` + moment().format("YYYY-MM-DD_h:m:s") + "_" + file.name);
-            const fileUploaded = await uploadBytes(fileRef, file);
+            //Function FirebaseUploadFile to get fileUrl
+            const fileUrl = await FirebaseUploadFile(file);
 
-            if (fileUploaded.metadata.fullPath) {
-              toast.success("FILE ADD Successfully");
-
-              const fileUrl = await getDownloadURL(fileRef);
-              console.log("fileUrl: " + fileUrl);
-
+            console.log("fileUrl: " + fileUrl);
+            //uploaded and get the fileUrl
+            if (fileUrl) {
               const associatefile = { quotation_id, fileUrl };
 
               //API to associate pdf with the quotation
-              const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
+              const result_association = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(associatefile),
               });
 
-              const res2 = await result2.json();
+              const res2 = await result_association.json();
 
               if (res2.ok) {
-                toast.success("FILE LIKED Successfully ");
+                toast.success("FILE LINKED TO QUOTATION Successfully ");
               }
               if (res2.errors) {
                 res2.errors.map((error) => toast.error(error));
@@ -214,7 +208,7 @@ const AddQuotation = () => {
 
           ////////////END UPLOAD FILE
 
-          //navigate("/list_quotation");
+          navigate("/list_quotation");
         }
         if (res1.errors) {
           res1.errors.map((error) => toast.error(error));

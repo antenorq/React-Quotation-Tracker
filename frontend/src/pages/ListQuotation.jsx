@@ -114,6 +114,9 @@ const ListQuotation = ({ activeLayout }) => {
       cellRenderer: (row) => {
         return (
           <>
+            <Button variant="primary " size="sm" href={row.data.file} target="_blank ">
+              <i className="bi bi-filetype-pdf"></i>
+            </Button>{" "}
             <Button variant="secondary" size="sm" onClick={() => handleEdit(row.data._id)}>
               <i className="bx bxs-pencil"></i>
             </Button>{" "}
