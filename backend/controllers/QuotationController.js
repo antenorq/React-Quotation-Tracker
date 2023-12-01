@@ -3,17 +3,16 @@ const multer = require("multer");
 
 // ASSOCIATE FILE WITH QUOTATION
 const associatefile = async (req, res) => {
-  const { fileUploaded, quotation_id } = req.body;
+  const { quotation_id, fileUrl } = req.body;
 
-  if (fileUploaded && quotation_id) {
-    console.log("aqui3");
+  if (quotation_id && fileUrl) {
     const quotation = await Quotation.findById(quotation_id);
 
     if (quotation) {
-      quotation.file = fileUploaded.metadata.name;
+      quotation.file = fileUrl;
       //save
       await quotation.save();
-      res.status(200).json({ ok: "File (" + fileUploaded.metadata.name + ") uploaded successfully!" });
+      res.status(200).json({ ok: "File uploaded successfully!" });
       return;
     } else {
       res.status(400).json({ errors: ["ASSOCIATE FILE - QUOTATION NOT FOUND"] });

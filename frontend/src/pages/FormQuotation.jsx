@@ -25,7 +25,7 @@ import { NumericFormat } from "react-number-format";
 
 //firebase
 import { storage } from "../config/firebaseConfig";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const AddQuotation = () => {
   const { user } = useContext(AuthContext);
@@ -40,11 +40,9 @@ const AddQuotation = () => {
   const [date, setDate] = useState("");
   const [followUp, setFollowUp] = useState("");
   const [quoteDetails, setQuoteDetails] = useState("");
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
 
   const [customerList, setCustomerList] = useState([]);
-
-  console.log(file);
 
   //ID PARAM FROM LIST QUOTATION EDIT BUTTOM
   const { id } = useParams();
@@ -153,38 +151,41 @@ const AddQuotation = () => {
         const res1 = await result1.json();
         console.log("quotation/add", res1);
 
-        //CREATE SUCCESS
+        //created successfully
         if (res1._id) {
           toast.success("Quotation ADD Successfully");
-          console.log("AQUI3");
 
           const quotation_id = res1._id;
 
           // FIREBASE STORAGE UPLOAD FILE
-          const fileRef = ref(storage, `files/` + file.name);
-          const fileUploaded = await uploadBytes(fileRef, file);
+          if (file !== null) {
+            const fileRef = ref(storage, `files/` + moment().format("YYYY-MM-DD_h:m:s") + "_" + file.name);
+            const fileUploaded = await uploadBytes(fileRef, file);
 
-          if (fileUploaded.metadata.fullPath) {
-            toast.success("FILE ADD Successfully");
-          }
+            if (fileUploaded.metadata.fullPath) {
+              toast.success("FILE ADD Successfully");
 
-          const associatefile = { quotation_id, fileUploaded };
-          console.log(associatefile);
+              const fileUrl = await getDownloadURL(fileRef);
+              console.log("fileUrl: " + fileUrl);
 
-          const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(associatefile),
-          });
+              const associatefile = { quotation_id, fileUrl };
 
-          const res2 = await result2.json();
-          console.log("RES DO associatefile");
-          console.log(res2);
-          if (res2) {
-            toast.success("FILE ASSOCIATED Successfully");
-          }
-          if (res2.errors) {
-            res2.errors.map((error) => toast.error(error));
+              //API to associate pdf with the quotation
+              const result2 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(associatefile),
+              });
+
+              const res2 = await result2.json();
+
+              if (res2.ok) {
+                toast.success("FILE LIKED Successfully");
+              }
+              if (res2.errors) {
+                res2.errors.map((error) => toast.error(error));
+              }
+            }
           }
 
           ////////////UPLOAD FILE REST API
