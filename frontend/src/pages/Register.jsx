@@ -14,6 +14,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
   const [type, setType] = useState(2);
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -23,7 +24,7 @@ const Register = () => {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const data = { name, email, password, confirmPassword, type };
+      const data = { name, email, password, confirmPassword, location, type };
 
       await fetch(process.env.REACT_APP_API_URL + "/api/users/register", {
         method: "POST",
@@ -38,8 +39,10 @@ const Register = () => {
             toast.success("User Registered Successfuly");
             setName("");
             setEmail("");
+            setLocation("");
             setPassword("");
             setConfirmPassword("");
+            setType("");
             console.log(res);
             navigate("/list_user");
           }
@@ -80,32 +83,27 @@ const Register = () => {
                       <input type="text" className="form-control" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="form-group">
+                      <label>Location</label>
+                      <select name="location" className="form-control" value={location} onChange={(e) => setLocation(e.target.value)}>
+                        <option value="CANADA">CANADA</option>
+                        <option value="USA">USA</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
                       <label>Password</label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        name="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
+                      <input type="password" className="form-control" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className="form-group">
                       <label>Confirm Password</label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        name=""
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                      />
+                      <input type="password" className="form-control" name="" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
                     <div className="form-group">
                       <label>User Access Type</label>
                       <select name="type" className="form-control" value={type} onChange={(e) => setType(e.target.value)}>
                         <option value="1">Admin</option>
                         <option value="2">Salesperson</option>
+                        <option value="3">Manager</option>
+                        <option value="4">Frontdesk</option>
                       </select>
                     </div>
 

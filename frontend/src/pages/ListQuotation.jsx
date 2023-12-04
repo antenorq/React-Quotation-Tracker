@@ -98,6 +98,9 @@ const ListQuotation = ({ activeLayout }) => {
         if (params.value === "Pending") {
           return { color: "white", backgroundColor: "#d4b400", textAlign: "center" };
         }
+        if (params.value === "Approved") {
+          return { color: "white", backgroundColor: "#0047AB", textAlign: "center" };
+        }
         if (params.value === "Finished") {
           return { color: "white", backgroundColor: "#018024", textAlign: "center" };
         }

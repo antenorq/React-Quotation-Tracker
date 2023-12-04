@@ -15,6 +15,7 @@ const Home = () => {
   const [qtdPending, setQtdPending] = useState(0);
   const [qtdFinished, setQtdFinished] = useState(0);
   const [qtdCanceled, setQtdCanceled] = useState(0);
+  const [qtdApproved, setQtdApproved] = useState(0);
 
   const { user, logout } = useContext(AuthContext);
 
@@ -37,6 +38,7 @@ const Home = () => {
             let qtd = 0;
             let qtd2 = 0;
             let qtd3 = 0;
+            let qtd4 = 0;
             res.map((res) => {
               if (res.status === "Pending") {
                 qtd = qtd + 1;
@@ -47,11 +49,15 @@ const Home = () => {
               if (res.status === "Canceled") {
                 qtd3 = qtd3 + 1;
               }
+              if (res.status === "Approved") {
+                qtd4 = qtd4 + 1;
+              }
               return qtd;
             });
             setQtdPending(qtd);
             setQtdFinished(qtd2);
             setQtdCanceled(qtd3);
+            setQtdApproved(qtd4);
           }
         })
         .catch((err) => {
@@ -91,10 +97,10 @@ const Home = () => {
           </Card>
         </Col>
         <Col className="mb-4" sm={12} md={6} lg={3}>
-          <Card className="card-custom">
+          <Card className="card-custom approved">
             <Card.Body>
-              <div className="title-content">Another Status...</div>
-              <span className="info-content">&nbsp;</span>
+              <div className="title-content">Approved</div>
+              <span className="info-content">{qtdApproved}</span>
             </Card.Body>
           </Card>
         </Col>

@@ -60,7 +60,10 @@ const ListUser = () => {
       field: "type",
       flex: 1,
       cellRenderer: (type) => {
-        return type.value === 1 ? "Admin" : "Salesperson";
+        if (type.value === 1) return "Admin";
+        if (type.value === 2) return "Salesperson";
+        if (type.value === 3) return "Manager";
+        if (type.value === 4) return "Frontdesk";
       },
     },
     {

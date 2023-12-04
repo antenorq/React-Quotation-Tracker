@@ -8,21 +8,11 @@ const { add, update, getAll } = require("../controllers/CustomerController");
 const validate = require("../middlewares/handleValidation");
 const authGuard = require("../middlewares/authGuard");
 
-const {
-  customerAddValidation,
-  customerUpdateValidation,
-} = require("../middlewares/customerValidations");
+const { customerAddValidation, customerUpdateValidation } = require("../middlewares/customerValidations");
 
 //Routes
-//router.post("/add", authGuard, customerAddValidation(), validate, add);
 router.post("/add", authGuard, customerAddValidation(), validate, add);
 router.get("/list", authGuard, getAll);
-router.put(
-  "/update/:id",
-  authGuard,
-  customerUpdateValidation(),
-  validate,
-  update
-);
+router.put("/update/:id", authGuard, customerUpdateValidation(), validate, update);
 
 module.exports = router;

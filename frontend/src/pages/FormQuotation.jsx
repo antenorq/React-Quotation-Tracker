@@ -25,7 +25,7 @@ import { NumericFormat } from "react-number-format";
 
 import FirebaseUploadFile from "../funcions/FirebaseUploadFile";
 
-const AddQuotation = () => {
+const FormQuotation = () => {
   const { user } = useContext(AuthContext);
 
   const [validated, setValidated] = useState(false);
@@ -88,6 +88,7 @@ const AddQuotation = () => {
               setDate(moment.utc(res.date).format("YYYY-MM-DD"));
               setFollowUp(moment.utc(res.followUp).format("YYYY-MM-DD"));
               setQuoteDetails(res.quoteDetails);
+              setFile(res.file);
             }
           })
           .catch((err) => {
@@ -114,7 +115,7 @@ const AddQuotation = () => {
     }
 
     try {
-      const formData = { customerId, userId, status, quoteGiven, date, followUp, quoteDetails };
+      const formData = { customerId, userId, status, quoteGiven, date, followUp, quoteDetails, file };
 
       //UPDATE QUOTATION
       if (id) {
@@ -266,6 +267,7 @@ const AddQuotation = () => {
                 <Form.Control as="select" required value={status} onChange={(e) => setStatus(e.target.value)}>
                   <option value="">Choose...</option>
                   <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
                   <option value="Finished"> Finished </option>
                   <option value="Canceled">Canceled</option>
                 </Form.Control>
@@ -306,7 +308,7 @@ const AddQuotation = () => {
               {/*QUOTATION PDF*/}
               <Form.Group as={Col} md="6">
                 <Form.Label>Quotation File</Form.Label>
-                <Form.Control required name="file" type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
+                <Form.Control required={id ? false : true} name="file" type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
                 <Form.Control.Feedback type="invalid">Quotation File Required</Form.Control.Feedback>
               </Form.Group>
             </Row>
@@ -320,4 +322,4 @@ const AddQuotation = () => {
   );
 };
 
-export default AddQuotation;
+export default FormQuotation;

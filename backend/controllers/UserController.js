@@ -12,7 +12,7 @@ const generateToken = (id) => {
 
 // REGISTER USER
 const register = async (req, res) => {
-  const { name, email, password, type } = req.body;
+  const { name, email, password, location, type } = req.body;
 
   //check if user exists
   const user = await User.findOne({ email });
@@ -31,6 +31,7 @@ const register = async (req, res) => {
     name,
     email,
     password: passwordHash,
+    location,
     type,
   });
 
@@ -68,6 +69,7 @@ const login = async (req, res) => {
   res.status(201).json({
     _id: user._id,
     name: user.name,
+    location: user.location,
     type: user.type,
     token: generateToken(user._id),
   });
@@ -81,7 +83,7 @@ const getCurrentUser = async (req, res) => {
 
 //UPDATE AN USER
 const update = async (req, res) => {
-  const { name, email, password, type } = req.body;
+  const { name, email, password, location, type } = req.body;
 
   const reqUser = req.user;
   const user = await User.findById(reqUser._id).select("-password");
@@ -92,6 +94,10 @@ const update = async (req, res) => {
 
   if (email) {
     user.email = email;
+  }
+
+  if (location) {
+    user.location = location;
   }
 
   if (type) {

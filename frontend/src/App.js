@@ -25,7 +25,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const { user, setUser, logout } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   useEffect(() => {
     // Check if user and token are stored in localStorage
@@ -37,17 +37,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-        theme="colored"
-      />
+      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick pauseOnFocusLoss draggable={false} pauseOnHover theme="colored" />
       <Routes>
         <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/login" element={user ? <Home /> : <Login />} />
