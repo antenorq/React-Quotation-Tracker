@@ -266,10 +266,24 @@ const FormQuotation = () => {
                 <Form.Label>Status</Form.Label>
                 <Form.Control as="select" required value={status} onChange={(e) => setStatus(e.target.value)}>
                   <option value="">Choose...</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Approved">Approved</option>
-                  <option value="Finished"> Finished </option>
-                  <option value="Canceled">Canceled</option>
+
+                  {/*admin or manager*/}
+                  {(user.type === 1 || user.type === 3) && (
+                    <>
+                      <option value="Pending">Pending</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Finished"> Finished </option>
+                      <option value="Canceled">Canceled</option>
+                    </>
+                  )}
+
+                  {/*salesperson*/}
+                  {user.type === 2 && (
+                    <>
+                      <option value="Pending">Pending</option>
+                      <option value="Canceled">Canceled</option>
+                    </>
+                  )}
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">Status Required</Form.Control.Feedback>
               </Form.Group>
@@ -277,7 +291,13 @@ const FormQuotation = () => {
               {/*SALESPERSON*/}
               <Form.Group as={Col} md="2">
                 <Form.Label>Salesperson</Form.Label>
-                <Form.Control readOnly disabled type="text" value={user.type === 1 ? userName : user.name} onChange={(e) => setUserName(e.target.value)} />
+                <Form.Control
+                  readOnly
+                  disabled
+                  type="text"
+                  value={user.type === 1 || user.type === 3 || user.type === 4 ? userName : user.name}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
               </Form.Group>
             </Row>
 

@@ -195,8 +195,8 @@ const deleteQuotationById = async (req, res) => {
 const getAll = async (req, res) => {
   try {
     let quotation;
-    //ADMIN
-    if (req.user.type === 1) {
+    //ADMIN or MANAGER
+    if (req.user.type === 1 || req.user.type === 3) {
       quotation = await Quotation.find().populate("customerId").populate("userId");
     }
     //SALESPERSON

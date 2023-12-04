@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -11,7 +11,15 @@ import { AuthContext } from "../context/AuthContext";
 import "./NavBarComp.css";
 
 const NavBarComp = ({ open, setOpen }) => {
+  const [userType, setUserType] = useState("");
   const { user, logout } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user.type === 1) setUserType("Admin");
+    if (user.type === 2) setUserType("Salesperson");
+    if (user.type === 3) setUserType("Manager");
+    if (user.type === 4) setUserType("Frontdesk");
+  }, []);
 
   const toggleopen = () => {
     open === "open" ? setOpen("") : setOpen("open");
@@ -25,12 +33,9 @@ const NavBarComp = ({ open, setOpen }) => {
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
         {/* <Navbar.Collapse id="basic-navbar-nav"> */}
         <Nav className="justify-content-end flex-grow-1 pe-5">
-          <NavDropdown
-            title={user.type === 2 ? "Salesperson" : "Admin"}
-            id="basic-nav-dropdown"
-          >
-            <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Info</NavDropdown.Item>
+          <NavDropdown title={userType} id="basic-nav-dropdown">
+            <NavDropdown.Item href="#">Profile</NavDropdown.Item>
+            <NavDropdown.Item href="#">Info</NavDropdown.Item>
             <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
           </NavDropdown>
         </Nav>
