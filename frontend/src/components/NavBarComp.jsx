@@ -19,7 +19,7 @@ const NavBarComp = ({ open, setOpen }) => {
     if (user.type === 2) setUserType("Salesperson");
     if (user.type === 3) setUserType("Manager");
     if (user.type === 4) setUserType("Frontdesk");
-  }, []);
+  }, [user.type]);
 
   const toggleopen = () => {
     open === "open" ? setOpen("") : setOpen("open");

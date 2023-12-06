@@ -69,7 +69,7 @@ const addfile = async (req, res) => {
 
 // ADD QUOTATION
 const add = async (req, res) => {
-  const { customerId, userId, status, quoteGiven, date, followUp, quoteDetails } = req.body;
+  const { customerId, userId, status, quoteGiven, date, followUp, quoteDetails, location } = req.body;
 
   const newQuotation = await Quotation.create({
     customerId,
@@ -79,6 +79,7 @@ const add = async (req, res) => {
     date,
     followUp,
     quoteDetails,
+    location,
   });
 
   // If Something went wrong return error
@@ -93,7 +94,7 @@ const add = async (req, res) => {
 
 //UPDATE quotation
 const update = async (req, res) => {
-  const { customerId, userId, status, quoteGiven, date, followUp, quoteDetails } = req.body;
+  const { customerId, userId, status, quoteGiven, date, followUp, quoteDetails, location } = req.body;
 
   const { id } = req.params;
 
@@ -110,6 +111,7 @@ const update = async (req, res) => {
       if (date) quotation.date = date;
       if (followUp) quotation.followUp = followUp;
       if (quoteDetails) quotation.quoteDetails = quoteDetails;
+      if (location) quotation.location = location;
 
       //save
       await quotation.save();
@@ -197,7 +199,7 @@ const getAll = async (req, res) => {
     let quotation;
     //ADMIN or MANAGER
     if (req.user.type === 1 || req.user.type === 3) {
-      quotation = await Quotation.find().populate("customerId").populate("userId");
+      quotation = await Quotation.find({ location: req.user.location }).populate("customerId").populate("userId");
     }
     //SALESPERSON
     if (req.user.type === 2) {

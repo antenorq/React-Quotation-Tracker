@@ -66,6 +66,7 @@ const ListUser = () => {
         if (type.value === 4) return "Frontdesk";
       },
     },
+    { field: "location", flex: 1 },
     {
       field: "createdAt",
       headerName: "Date Created",

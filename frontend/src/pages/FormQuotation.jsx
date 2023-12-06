@@ -26,18 +26,20 @@ import { NumericFormat } from "react-number-format";
 import FirebaseUploadFile from "../funcions/FirebaseUploadFile";
 
 const FormQuotation = () => {
+  const [validated, setValidated] = useState(false);
+  //userlogged
   const { user } = useContext(AuthContext);
 
-  const [validated, setValidated] = useState(false);
-
+  //quotation user and all info
   const [customerId, setCustomerId] = useState("");
-  const [userId, setUserId] = useState(user._id);
+  const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
   const [status, setStatus] = useState("");
   const [quoteGiven, setQuoteGiven] = useState("");
   const [date, setDate] = useState("");
   const [followUp, setFollowUp] = useState("");
   const [quoteDetails, setQuoteDetails] = useState("");
+  const [location, setLocation] = useState("");
   const [file, setFile] = useState(null);
 
   const [customerList, setCustomerList] = useState([]);
@@ -88,7 +90,7 @@ const FormQuotation = () => {
               setDate(moment.utc(res.date).format("YYYY-MM-DD"));
               setFollowUp(moment.utc(res.followUp).format("YYYY-MM-DD"));
               setQuoteDetails(res.quoteDetails);
-              setFile(res.file);
+              setLocation(res.location);
             }
           })
           .catch((err) => {
@@ -115,32 +117,67 @@ const FormQuotation = () => {
     }
 
     try {
-      const formData = { customerId, userId, status, quoteGiven, date, followUp, quoteDetails, file };
-
       //UPDATE QUOTATION
       if (id) {
-        await fetch(process.env.REACT_APP_API_URL + "/api/quotation/update/" + id, {
+        const formData = { customerId, userId, status, quoteGiven, date, followUp, quoteDetails, location, file };
+
+        const quotation_update = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/update/" + id, {
           method: "PUT",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + user.token },
           body: JSON.stringify(formData),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            if (res._id) {
-              toast.success("Quotation Updated Successfully");
-              navigate("/list_quotation");
+        });
+
+        const res_quotation_update = await quotation_update.json();
+
+        if (res_quotation_update._id) {
+          toast.success("Quotation Updated Successfully");
+
+          const quotation_id = res_quotation_update._id;
+
+          // FIREBASE STORAGE UPLOAD FILE
+          if (file !== null) {
+            //Function FirebaseUploadFile to get fileUrl
+            const fileUrl = await FirebaseUploadFile(file);
+
+            console.log("fileUrl: " + fileUrl);
+            //uploaded and get the fileUrl
+            if (fileUrl) {
+              const associatefile = { quotation_id, fileUrl };
+
+              //API to associate pdf with the quotation
+              const result_association = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(associatefile),
+              });
+
+              const res2 = await result_association.json();
+
+              if (res2.ok) {
+                toast.success("FILE LINKED TO QUOTATION Successfully ");
+                navigate("/list_quotation");
+              }
+              if (res2.errors) {
+                res2.errors.map((error) => toast.error(error));
+              }
             }
-            if (res.errors) {
-              res.errors.map((error) => toast.error(error));
-            }
-          })
-          .catch((err) => {
-            toast.error(err.message);
-          });
+          }
+          // END OF FIREBASE UPLOAD
+        } // END OF IF QUOTATION RESULT WAS OK
+
+        //   if (res.errors) {
+        //     res.errors.map((error) => toast.error(error));
+        //   }
+        // })
+        // .catch((err) => {
+        //   toast.error(err.message);
+        // });
       }
 
       //CREATE QUOTATION
       else {
+        const formData = { customerId, userId: user._id, status, quoteGiven, date, followUp, quoteDetails, location: user.location, file };
+
         const result1 = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/add", {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + user.token },
@@ -209,7 +246,7 @@ const FormQuotation = () => {
 
           ////////////END UPLOAD FILE
 
-          navigate("/list_quotation");
+          //navigate("/list_quotation");
         }
         if (res1.errors) {
           res1.errors.map((error) => toast.error(error));
@@ -295,7 +332,8 @@ const FormQuotation = () => {
                   readOnly
                   disabled
                   type="text"
-                  value={user.type === 1 || user.type === 3 || user.type === 4 ? userName : user.name}
+                  //value={user.type === 1 || user.type === 3 || user.type === 4 ? userName : user.name}
+                  value={userName}
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </Form.Group>
