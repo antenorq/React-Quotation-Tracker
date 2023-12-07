@@ -15,7 +15,8 @@ import ListCustomer from "./pages/ListCustomer";
 import ListUser from "./pages/ListUser";
 import AddCustomer from "./pages/AddCustomer";
 import ListQuotation from "./pages/ListQuotation";
-import FormQuotation from "./pages/FormQuotation";
+import AddQuotation from "./pages/AddQuotation";
+import UpdateQuotation from "./pages/UpdateQuotation";
 
 //Toastify
 import { ToastContainer } from "react-toastify";
@@ -37,18 +38,27 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick pauseOnFocusLoss draggable={false} pauseOnHover theme="colored" />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="colored"
+      />
       <Routes>
         <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/login" element={user ? <Home /> : <Login />} />
-
         <Route path="/register" element={user ? <Register /> : <Login />} />
         <Route path="/list_user" element={user ? <ListUser /> : <Login />} />
         <Route path="/list_customer" element={user ? <ListCustomer /> : <Login />} />
         <Route path="/list_quotation" element={user ? <ListQuotation /> : <Login />} />
         <Route path="/add_customer" element={user ? <AddCustomer /> : <Login />} />
-        <Route path="/add_quotation" element={user ? <FormQuotation /> : <Login />} />
-        <Route path="/update_quotation/:id" element={user ? <FormQuotation /> : <Login />} />
+        <Route path="/add_quotation" element={user ? <AddQuotation /> : <Login />} />
+        <Route path="/update_quotation/:id" element={user ? <UpdateQuotation /> : <Login />} />
       </Routes>
     </BrowserRouter>
   );

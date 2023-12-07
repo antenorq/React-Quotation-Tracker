@@ -69,6 +69,7 @@ const addfile = async (req, res) => {
 
 // ADD QUOTATION
 const add = async (req, res) => {
+  console.log("aqui add quotation");
   const { customerId, userId, status, quoteGiven, date, followUp, quoteDetails, location } = req.body;
 
   const newQuotation = await Quotation.create({
