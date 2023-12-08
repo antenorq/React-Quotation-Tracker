@@ -1,25 +1,21 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 //components
 import Layout from "../components/Layout";
-
+import FormQuotation from "../components/FormQuotation";
 //Toastify
 import { toast } from "react-toastify";
-
 //Context API
 import { AuthContext } from "../context/AuthContext";
-
-import FirebaseUploadFile from "../funcions/FirebaseUploadFile";
-
-import FormQuotation from "../components/FormQuotation";
+//hooks
+import useFirebaseUploadFile from "../hooks/useFirebaseUploadFile";
+import useListCustomers from "../hooks/useListCustomers";
 
 const AddQuotation = () => {
-  const navigate = useNavigate();
   //userlogged
   const { user } = useContext(AuthContext);
   const [validated, setValidated] = useState(false);
-  const [customerList, setCustomerList] = useState([]);
   const [formData, setFormData] = useState({
     customerId: "",
     userId: user._id, //prefill user id logged
@@ -32,29 +28,11 @@ const AddQuotation = () => {
     file: "",
   });
 
-  //Load Customers data from api to populate the select input
-  useEffect(() => {
-    try {
-      fetch(process.env.REACT_APP_API_URL + "/api/customers/list", {
-        headers: {
-          Authorization: "Bearer " + user.token,
-        },
-      })
-        .then((result) => result.json())
-        .then((res) => {
-          if (res.errors) {
-            res.errors.map((error) => toast.error(error));
-          } else {
-            setCustomerList(res);
-          }
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
-    } catch (error) {
-      toast.error(error);
-    }
-  }, [user.token]);
+  //HOOKS
+  const { UploadFile } = useFirebaseUploadFile();
+  const customerList = useListCustomers();
+
+  const navigate = useNavigate();
 
   //SUBMIT
   const handleSubmit = async (event) => {
@@ -94,8 +72,8 @@ const AddQuotation = () => {
 
       // FIREBASE STORAGE UPLOAD FILE
       if (formData.file !== null) {
-        //Function FirebaseUploadFile to get fileUrl
-        const fileUrl = await FirebaseUploadFile(formData.file);
+        //Hook useFirebaseUploadFile to get fileUrl
+        const fileUrl = await UploadFile(formData.file);
 
         console.log("fileUrl: " + fileUrl);
         //uploaded and get the fileUrl
@@ -117,6 +95,8 @@ const AddQuotation = () => {
           if (result.errors) {
             result.errors.map((error) => toast.error(error));
           }
+        } else {
+          toast.error("Something went wrong to Upload File");
         }
       } else {
         toast.error("Quotation File was not found and not Linked");
