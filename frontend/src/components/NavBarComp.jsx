@@ -10,6 +10,10 @@ import { AuthContext } from "../context/AuthContext";
 //CSS
 import "./NavBarComp.css";
 
+//canada-usa flags
+import canada from "../assets/img/canada.png";
+import usa from "../assets/img/usa.png";
+
 const NavBarComp = ({ open, setOpen }) => {
   const [userType, setUserType] = useState("");
   const { user, logout } = useContext(AuthContext);
@@ -33,6 +37,10 @@ const NavBarComp = ({ open, setOpen }) => {
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
         {/* <Navbar.Collapse id="basic-navbar-nav"> */}
         <Nav className="justify-content-end flex-grow-1 pe-5">
+          <Navbar.Text>
+            {user.location === "CANADA" && <img className="flag" src={canada} alt="" />}
+            {user.location === "USA" && <img className="flag" src={usa} alt="" />}
+          </Navbar.Text>
           <NavDropdown title={userType} id="basic-nav-dropdown">
             <NavDropdown.Item href="#">Profile</NavDropdown.Item>
             <NavDropdown.Item href="#">Info</NavDropdown.Item>

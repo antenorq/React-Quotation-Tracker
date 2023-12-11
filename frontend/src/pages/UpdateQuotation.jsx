@@ -46,7 +46,7 @@ const UpdateQuotation = () => {
           const response = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + id);
           const result = await response.json();
 
-          if (result) {
+          if (result._id) {
             const updatedFormData = {
               customerId: result.customerId,
               userId: result.userId,
@@ -99,8 +99,6 @@ const UpdateQuotation = () => {
 
         const res_quotation_update = await quotation_update.json();
 
-        console.log("res_quotation_update", res_quotation_update);
-
         if (res_quotation_update._id) {
           toast.success("Quotation Updated Successfully");
 
@@ -134,7 +132,7 @@ const UpdateQuotation = () => {
               toast.error("Something went wrong to Upload File");
             }
           } else {
-            toast.warning("We keep the same quotation file was before");
+            toast.warning("we kept the same quote file as it was before");
           }
           // END OF FIREBASE UPLOAD
           navigate("/list_quotation");

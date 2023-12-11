@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 //Bootstrap
@@ -19,11 +19,18 @@ import { NumericFormat } from "react-number-format";
 const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, validated }) => {
   //userlogged
   const { user } = useContext(AuthContext);
+  const userName = formData.userId.name;
 
   //ID PARAM FROM LIST QUOTATION EDIT BUTTOM
   const { id } = useParams();
 
-  console.log(formData);
+  useEffect(() => {
+    if (userName === undefined) {
+      document.getElementById("username").setAttribute("value", user.name);
+    } else {
+      document.getElementById("username").setAttribute("value", userName);
+    }
+  }, [userName, user.name]);
 
   return (
     <Card className="card-custom-area">
@@ -99,8 +106,8 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
                 readOnly
                 disabled
                 type="text"
-                //value={user.type === 1 || user.type === 3 || user.type === 4 ? userName : user.name}
-                value={formData.userId.name}
+                id="username"
+                //value={userName}
               />
             </Form.Group>
           </Row>
@@ -109,7 +116,13 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
             {/*QUOTE DETAIL*/}
             <Form.Group as={Col} md="6">
               <Form.Label>Quote Note</Form.Label>
-              <Form.Control as="textarea" rows={3} required value={formData.quoteDetails} onChange={(e) => setFormData({ ...formData, quoteDetails: e.target.value })} />
+              <Form.Control
+                as="textarea"
+                rows={3}
+                required
+                value={formData.quoteDetails}
+                onChange={(e) => setFormData({ ...formData, quoteDetails: e.target.value })}
+              />
               <Form.Control.Feedback type="invalid">Quote Details Required</Form.Control.Feedback>
             </Form.Group>
 
@@ -132,7 +145,13 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
             {/*QUOTATION PDF*/}
             <Form.Group as={Col} md="6">
               <Form.Label>Quotation File</Form.Label>
-              <Form.Control required={id ? false : true} name="file" type="file" accept=".pdf" onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })} />
+              <Form.Control
+                required={id ? false : true}
+                name="file"
+                type="file"
+                accept=".pdf"
+                onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
+              />
               <Form.Control.Feedback type="invalid">Quotation File Required</Form.Control.Feedback>
             </Form.Group>
           </Row>

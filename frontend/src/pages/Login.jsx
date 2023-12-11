@@ -25,8 +25,6 @@ const Login = () => {
       event.preventDefault();
       const data = { email, password };
 
-      console.log(process.env.REACT_APP_API_URL);
-
       await fetch(process.env.REACT_APP_API_URL + "/api/users/login", {
         method: "POST",
         headers: {
@@ -42,7 +40,6 @@ const Login = () => {
             setPassword("");
             setUser(res);
             localStorage.setItem("user", JSON.stringify(res));
-            console.log(res);
             navigate("/");
           }
           if (res.errors) {
@@ -82,7 +79,14 @@ const Login = () => {
                   </div>
                   <div className="form-group">
                     <label>Password</label>
-                    <input type="password" className="form-control" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                     <div className="form_links">
                       <a href="/">Forgot your password?</a>
                     </div>

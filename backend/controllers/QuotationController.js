@@ -134,7 +134,10 @@ const getQuotationById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const quotation = await Quotation.findById(id).populate("customerId").populate("userId");
+    const quotation = await Quotation.findById(id).select("-password").populate("customerId").populate({
+      path: "userId",
+      select: "-password", // Exclude the password field
+    });
 
     //check if quotation exists
     if (!quotation) {
@@ -197,8 +200,12 @@ const deleteQuotationById = async (req, res) => {
 const getAll = async (req, res) => {
   try {
     let quotation;
-    //ADMIN or MANAGER
-    if (req.user.type === 1 || req.user.type === 3) {
+    //ADMIN
+    if (req.user.type === 1) {
+      quotation = await Quotation.find().populate("customerId").populate("userId");
+    }
+    //MANAGER
+    if (req.user.type === 3) {
       quotation = await Quotation.find({ location: req.user.location }).populate("customerId").populate("userId");
     }
     //SALESPERSON

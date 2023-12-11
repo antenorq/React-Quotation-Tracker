@@ -3,6 +3,10 @@ import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 import Layout from "../components/Layout";
 import moment from "moment";
 
+//canada-usa flags
+import canada from "../assets/img/canada.png";
+import usa from "../assets/img/usa.png";
+
 //bootstrap
 import { Button } from "react-bootstrap";
 
@@ -58,10 +62,10 @@ const ListQuotation = ({ activeLayout }) => {
   // Each Column Definition results in one Column.
   const [columnDefs] = useState([
     { field: "customerId.name", headerName: "Customer", flex: 1 },
-    { field: "userId.name", headerName: "Salesperson", flex: 1 },
+    { field: "userId.name", headerName: "Salesperson", flex: 0.8 },
     {
       field: "quoteGiven",
-      flex: 1,
+      flex: 0.8,
       cellRenderer: (data) => {
         return "$" + data.value;
       },
@@ -69,14 +73,14 @@ const ListQuotation = ({ activeLayout }) => {
     {
       field: "date",
       headerName: "Date Sent",
-      flex: 1,
+      flex: 0.8,
       cellRenderer: (data) => {
         return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
     {
       field: "followUp",
-      flex: 1,
+      flex: 0.8,
       cellRenderer: (data) => {
         return moment.utc(data.value).format("YYYY-MM-DD");
       },
@@ -84,13 +88,24 @@ const ListQuotation = ({ activeLayout }) => {
     { field: "quoteDetails", flex: 1, headerName: "Quote Note" },
     {
       field: "createdAt",
-      flex: 1,
+      flex: 0.8,
       headerName: "Date Created",
       sort: "desc",
       cellRenderer: (data) => {
         return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
+
+    {
+      field: "location",
+      headerName: "Location",
+      flex: 0.5,
+      cellRenderer: (data) => {
+        if (data.value === "CANADA") return <img className="flag" src={canada} alt="canada" />;
+        if (data.value === "USA") return <img className="flag" src={usa} alt="usa" />;
+      },
+    },
+
     {
       field: "status",
       flex: 0.5,
@@ -112,11 +127,13 @@ const ListQuotation = ({ activeLayout }) => {
     },
     {
       field: "Actions",
-      flex: 1,
+      flex: 0.8,
       cellClass: "ag-right-aligned-cell",
       cellRenderer: (row) => {
         return (
           <>
+            {/* {row.data.location === "CANADA" && <img className="flag" src={canada} alt="" />}
+            {row.data.location === "USA" && <img className="flag" src={usa} alt="" />}{" "} */}
             <Button variant="primary " size="sm" href={row.data.file} target="_blank ">
               <i className="bi bi-filetype-pdf"></i>
             </Button>{" "}

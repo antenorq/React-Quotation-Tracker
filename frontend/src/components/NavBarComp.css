@@ -14,3 +14,7 @@
 .fixed-top {
   left: inherit;
 }
+
+.flag {
+  height: 20px !important;
+}
