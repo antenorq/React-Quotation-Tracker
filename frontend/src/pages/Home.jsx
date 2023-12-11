@@ -106,7 +106,7 @@ const Home = () => {
         </Col>
       </Row>
 
-      {/*// EVENTS//*/}
+      {/*// CARD //*/}
       <Card className="card-custom-area">
         <Card.Header className="cardHeader-custom" as="h5">
           Quotation Tracker

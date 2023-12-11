@@ -14,8 +14,8 @@ const quotationAddValidation = () => {
 
 const quotationUpdateValidation = () => {
   return [
-    body("customerId").optional().isMongoId().withMessage("Customer invalid"),
-    body("userId").optional().isMongoId().withMessage("User invalid"),
+    body("customerId").optional().isObject().withMessage("Customer invalid"),
+    body("userId").optional().isObject().withMessage("User invalid"),
     body("status").optional().isString().withMessage("The Status is mandatory"),
     body("quoteGiven").optional().isNumeric().withMessage("Enter a valid Quote Given").isLength({ min: 3 }).withMessage("Quote Given value needs minimum 03 number"),
     body("date").optional().isDate().withMessage("Enter a valid Date (YYYY-MM-DD)"),

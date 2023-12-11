@@ -81,7 +81,7 @@ const ListQuotation = ({ activeLayout }) => {
         return moment.utc(data.value).format("YYYY-MM-DD");
       },
     },
-    { field: "quoteDetails", flex: 2, headerName: "Quote Note" },
+    { field: "quoteDetails", flex: 1, headerName: "Quote Note" },
     {
       field: "createdAt",
       flex: 1,
@@ -93,7 +93,7 @@ const ListQuotation = ({ activeLayout }) => {
     },
     {
       field: "status",
-      flex: 1,
+      flex: 0.5,
       cellStyle: (params) => {
         if (params.value === "Pending") {
           return { color: "white", backgroundColor: "#d4b400", textAlign: "center" };

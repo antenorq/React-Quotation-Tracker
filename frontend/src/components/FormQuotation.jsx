@@ -23,6 +23,8 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
   //ID PARAM FROM LIST QUOTATION EDIT BUTTOM
   const { id } = useParams();
 
+  console.log(formData);
+
   return (
     <Card className="card-custom-area">
       <Card.Header className="cardHeader-custom" as="h5">
@@ -35,7 +37,7 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
             {/*CUSTOMER*/}
             <Form.Group as={Col} md="6">
               <Form.Label>Customer / Business</Form.Label>
-              <Form.Control as="select" required value={formData.customerId} onChange={(e) => setFormData({ ...formData, customerId: e.target.value })}>
+              <Form.Control as="select" required value={formData.customerId._id} onChange={(e) => setFormData({ ...formData, customerId: e.target.value })}>
                 <option value="">Choose...</option>
                 {customerList.map((customer) => (
                   <option key={customer._id} value={customer._id}>
@@ -98,7 +100,7 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
                 disabled
                 type="text"
                 //value={user.type === 1 || user.type === 3 || user.type === 4 ? userName : user.name}
-                value={user.name}
+                value={formData.userId.name}
               />
             </Form.Group>
           </Row>
@@ -107,13 +109,7 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
             {/*QUOTE DETAIL*/}
             <Form.Group as={Col} md="6">
               <Form.Label>Quote Note</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                required
-                value={formData.quoteDetails}
-                onChange={(e) => setFormData({ ...formData, quoteDetails: e.target.value })}
-              />
+              <Form.Control as="textarea" rows={3} required value={formData.quoteDetails} onChange={(e) => setFormData({ ...formData, quoteDetails: e.target.value })} />
               <Form.Control.Feedback type="invalid">Quote Details Required</Form.Control.Feedback>
             </Form.Group>
 
@@ -136,13 +132,7 @@ const FormQuotation = ({ formData, setFormData, customerList, handleSubmit, vali
             {/*QUOTATION PDF*/}
             <Form.Group as={Col} md="6">
               <Form.Label>Quotation File</Form.Label>
-              <Form.Control
-                required={id ? false : true}
-                name="file"
-                type="file"
-                accept=".pdf"
-                onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
-              />
+              <Form.Control required={id ? false : true} name="file" type="file" accept=".pdf" onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })} />
               <Form.Control.Feedback type="invalid">Quotation File Required</Form.Control.Feedback>
             </Form.Group>
           </Row>

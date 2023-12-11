@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 
 import "./Login.css";
 import loginImg from "../assets/img/login-img.png";
-import logo from "../assets/img/logo.png";
+//import logo from "../assets/img/logo.png";
 import { useNavigate } from "react-router-dom";
 
 //Context API
@@ -82,14 +82,7 @@ const Login = () => {
                   </div>
                   <div className="form-group">
                     <label>Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      name="password"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <input type="password" className="form-control" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <div className="form_links">
                       <a href="/">Forgot your password?</a>
                     </div>

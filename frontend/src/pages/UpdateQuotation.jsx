@@ -39,40 +39,46 @@ const UpdateQuotation = () => {
   const { id } = useParams();
 
   //Load Quotattion from ID PARAM
-  useEffect(async () => {
-    if (id) {
-      try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + id);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        try {
+          const response = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/" + id);
+          const result = await response.json();
 
-        const result = await response.json();
+          if (result) {
+            const updatedFormData = {
+              customerId: result.customerId,
+              userId: result.userId,
+              status: result.status,
+              quoteGiven: result.quoteGiven,
+              date: moment.utc(result.date).format("YYYY-MM-DD"),
+              followUp: moment.utc(result.followUp).format("YYYY-MM-DD"),
+              quoteDetails: result.quoteDetails,
+              location: result.location,
+              //file: result.file,
+            };
 
-        if (result) {
-          toast.success("Quotation Load Successfuly");
-
-          setFormData({ customerId: formData.customerId._id });
-          setFormData({ userId: formData.userId._id });
-          setFormData({ status: formData.status });
-          setFormData({ quoteGiven: formData.quoteGiven });
-          setFormData({ date: moment.utc(formData.date).format("YYYY-MM-DD") });
-          setFormData({ followUp: moment.utc(formData.followUp).format("YYYY-MM-DD") });
-          setFormData({ quoteDetails: formData.quoteDetails });
-          setFormData({ location: formData.location });
-          setFormData({ file: formData.file });
-        } else {
-          if (result.errors) {
-            result.errors.map((error) => toast.error(error));
+            setFormData(updatedFormData);
           } else {
-            toast.error("Quotation Load Something went wrong");
+            if (result.errors) {
+              result.errors.map((error) => toast.error(error));
+            } else {
+              toast.error("Quotation Load - Something went wrong");
+            }
           }
+        } catch (error) {
+          toast.error(error.message);
         }
-      } catch (error) {
-        toast.error(error.message);
       }
-    }
-  }, [formData, user.token, id]);
+    };
+
+    fetchData();
+  }, [id]);
 
   //SUBMIT
   const handleSubmit = async (event) => {
+    console.log("FORM DATA: ", formData);
     event.preventDefault();
     setValidated(true);
 
@@ -93,22 +99,23 @@ const UpdateQuotation = () => {
 
         const res_quotation_update = await quotation_update.json();
 
+        console.log("res_quotation_update", res_quotation_update);
+
         if (res_quotation_update._id) {
           toast.success("Quotation Updated Successfully");
 
           const quotation_id = res_quotation_update._id;
 
           // FIREBASE STORAGE UPLOAD FILE
-          if (formData.file !== null) {
+          if (formData.file !== undefined) {
             //Hook useFirebaseUploadFile to get fileUrl
             const fileUrl = await UploadFile(formData.file);
 
-            console.log("fileUrl: " + fileUrl);
             //uploaded and get the fileUrl
             if (fileUrl) {
               const associatefile = { quotation_id, fileUrl };
 
-              //API to associate pdf with the quotation
+              //request API to associate pdf with the quotation
               const response = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -127,71 +134,16 @@ const UpdateQuotation = () => {
               toast.error("Something went wrong to Upload File");
             }
           } else {
-            toast.error("Quotation File was not found and not Linked");
+            toast.warning("We keep the same quotation file was before");
           }
           // END OF FIREBASE UPLOAD
+          navigate("/list_quotation");
         } // END OF IF QUOTATION RESULT WAS OK
-
-        //   if (res.errors) {
-        //     res.errors.map((error) => toast.error(error));
-        //   }
-        // })
-        // .catch((err) => {
-        //   toast.error(err.message);
-        // });
-      }
-
-      //CREATE QUOTATION
-
-      if (id) {
-        const quotation_update = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/update/" + id, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Authorization: "Bearer " + user.token },
-          body: JSON.stringify(formData),
-        });
-
-        const res_quotation_update = await quotation_update.json();
-
-        if (res_quotation_update._id) {
-          toast.success("Quotation Updated Successfully");
-
-          const quotation_id = res_quotation_update._id;
-
-          // FIREBASE STORAGE UPLOAD FILE
-          if (formData.file !== null) {
-            //Hook useFirebaseUploadFile to get fileUrl
-            const fileUrl = await UploadFile(formData.file);
-
-            console.log("fileUrl: " + fileUrl);
-            //uploaded and get the fileUrl
-            if (fileUrl) {
-              const associatefile = { quotation_id, fileUrl };
-
-              //API to associate pdf with the quotation
-              const response = await fetch(process.env.REACT_APP_API_URL + "/api/quotation/associatefile", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(associatefile),
-              });
-
-              const result = await response.json();
-
-              if (result.ok) {
-                toast.success("FILE LINKED TO QUOTATION Successfully ");
-              }
-              if (result.errors) {
-                result.errors.map((error) => toast.error(error));
-              }
-            } else {
-              toast.error("Something went wrong to Upload File");
-            }
-          } else {
-            toast.error("Quotation File was not found and not Linked");
-          }
-          // END OF FIREBASE UPLOAD
-        } // END OF IF QUOTATION RESULT WAS OK
-
-        navigate("/list_quotation");
+        else {
+          if (res_quotation_update.errors) {
+            res_quotation_update.errors.map((error) => toast.error(error));
+          } else toast.error("Quotation NOT Updated");
+        }
       }
     } catch (error) {
       toast.error(error);
