@@ -35,29 +35,21 @@ const Home = () => {
           } else {
             //setRowData(res);
             //let total = 0;
-            let qtd = 0;
-            let qtd2 = 0;
-            let qtd3 = 0;
-            let qtd4 = 0;
+            let pending = 0;
+            let finished = 0;
+            let canceled = 0;
+            let approved = 0;
             res.map((res) => {
-              if (res.status === "Pending") {
-                qtd = qtd + 1;
-              }
-              if (res.status === "Finished") {
-                qtd2 = qtd2 + 1;
-              }
-              if (res.status === "Canceled") {
-                qtd3 = qtd3 + 1;
-              }
-              if (res.status === "Approved") {
-                qtd4 = qtd4 + 1;
-              }
-              return qtd;
+              if (res.status === "Pending") pending = pending + 1;
+              if (res.status === "Finished") finished = finished + 1;
+              if (res.status === "Canceled") canceled = canceled + 1;
+              if (res.status === "Approved") approved = approved + 1;
+              return "";
             });
-            setQtdPending(qtd);
-            setQtdFinished(qtd2);
-            setQtdCanceled(qtd3);
-            setQtdApproved(qtd4);
+            setQtdPending(pending);
+            setQtdFinished(finished);
+            setQtdCanceled(canceled);
+            setQtdApproved(approved);
           }
         })
         .catch((err) => {
