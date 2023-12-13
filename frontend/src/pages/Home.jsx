@@ -19,6 +19,8 @@ const Home = () => {
 
   const { user, logout } = useContext(AuthContext);
 
+  console.log(user);
+
   //Load ALL Quotation data from api
   useEffect(() => {
     try {

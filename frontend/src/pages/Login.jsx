@@ -11,6 +11,11 @@ import { AuthContext } from "../context/AuthContext";
 //Toastify
 import { toast } from "react-toastify";
 
+//Google Login
+//import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,12 +24,42 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  //SUBMIT
-  const handleSubmit = async (event) => {
-    try {
-      event.preventDefault();
-      const data = { email, password };
+  //Google Login Functions
+  const responseMessage = (response) => {
+    const userObject = jwtDecode(response.credential);
+    console.log(userObject);
+    console.log(userObject.email);
 
+    setEmail(userObject.email);
+
+    if (userObject.email_verified && userObject.email) {
+      handleSubmit(userObject.email);
+    }
+  };
+  const errorMessage = (error) => {
+    console.log(error);
+  };
+
+  // const login = useGoogleLogin({
+  //   // onSuccess: (codeResponse) => setUser(codeResponse),
+  //   onSuccess: (codeResponse) => console.log(codeResponse),
+  //   onError: (error) => console.log("Login Failed:", error),
+  // });
+
+  // const logOut = () => {
+  //   googleLogout();
+  //   //setProfile(null);
+  //   console.log("AQUIUIU");
+  // };
+
+  //SUBMIT
+  //const handleSubmit = async (event) => {
+  const handleSubmit = async (email) => {
+    try {
+      //event.preventDefault();
+      //const data = { email, password };
+      const data = { email: email };
+      console.log(data);
       await fetch(process.env.REACT_APP_API_URL + "/api/users/login", {
         method: "POST",
         headers: {
@@ -71,8 +106,14 @@ const Login = () => {
                 <br />
                 <br />
               </div>
+              <div style={{ textAlign: "-webkit-center" }}>
+                <GoogleLogin onSuccess={responseMessage} onError={errorMessage} shape={"pill"} theme="filled_blue" />
+                {/* <button onClick={() => login()}>Sign in with Google 🚀 </button>
+                <button onClick={logOut}>Log out</button> */}
+              </div>
+              <br></br>
               <div className="form_inner">
-                <form>
+                {/* <form>
                   <div className="form-group">
                     <label>Username/Email</label>
                     <input type="text" className="form-control" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -97,8 +138,7 @@ const Login = () => {
                     </button>
                   </div>
                   <br />
-                  {/* <Link to="/register">Don't have an account? Sign Up</Link> */}
-                </form>
+                </form> */}
               </div>
             </div>
           </div>
