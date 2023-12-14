@@ -10,6 +10,8 @@ const useFirebaseUploadFile = () => {
 
     if (fileUploaded.metadata.fullPath) {
       return await getDownloadURL(fileRef);
+    } else {
+      return;
     }
   };
 

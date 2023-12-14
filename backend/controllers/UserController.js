@@ -49,8 +49,8 @@ const register = async (req, res) => {
 
 //SIGN IN
 const login = async (req, res) => {
-  //const { email, password } = req.body;
-  const { email } = req.body;
+  const { email, password } = req.body;
+  //const { email } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -61,10 +61,12 @@ const login = async (req, res) => {
   }
 
   //check if password matches
-  // if (!bcrypt.compare(password, user.password)) {
-  //   res.status(422).json({ errors: ["Invalid password"] });
-  //   return;
-  // }
+  if (password) {
+    if (!bcrypt.compare(password, user.password)) {
+      res.status(422).json({ errors: ["Invalid password"] });
+      return;
+    }
+  }
 
   //return user with id,name, token
   res.status(201).json({

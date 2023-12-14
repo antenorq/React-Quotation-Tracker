@@ -72,11 +72,15 @@ const AddQuotation = () => {
 
       // FIREBASE STORAGE UPLOAD FILE
       if (formData.file !== null) {
-        //Hook useFirebaseUploadFile to get fileUrl
+        console.log(formData.file);
+
+        //Hook function from useFirebaseUploadFile to get fileUrl
+
         const fileUrl = await UploadFile(formData.file);
 
-        console.log("fileUrl: " + fileUrl);
-        //uploaded and get the fileUrl
+        console.log("fileUrl:");
+        console.log(fileUrl);
+
         if (fileUrl) {
           const associatefile = { quotation_id, fileUrl };
 

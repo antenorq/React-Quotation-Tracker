@@ -85,17 +85,32 @@ const Register = () => {
                     <div className="form-group">
                       <label>Location</label>
                       <select name="location" className="form-control" value={location} onChange={(e) => setLocation(e.target.value)}>
+                        <option value="">Choose a Option</option>
                         <option value="CANADA">CANADA</option>
                         <option value="USA">USA</option>
                       </select>
                     </div>
                     <div className="form-group">
                       <label>Password</label>
-                      <input type="password" className="form-control" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
                     </div>
                     <div className="form-group">
                       <label>Confirm Password</label>
-                      <input type="password" className="form-control" name="" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                      <input
+                        type="password"
+                        className="form-control"
+                        name=""
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      />
                     </div>
                     <div className="form-group">
                       <label>User Access Type</label>
