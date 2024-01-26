@@ -149,7 +149,7 @@ const Login = () => {
                   </button>
                   <br></br>
                   <br></br>
-                  TEST ENVIROMENT <br />
+                  TEST ENVIRONMENT <br />
                   user: antenor@igloo400.com
                   <br />
                   password: 123456
