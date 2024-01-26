@@ -147,6 +147,12 @@ const Login = () => {
                   <button className="form-btn" onClick={handleSubmit}>
                     Login
                   </button>
+                  <br></br>
+                  <br></br>
+                  TEST ENVIROMENT <br />
+                  user: antenor@igloo400.com
+                  <br />
+                  password: 123456
                 </div>
                 <br />
               </div>
